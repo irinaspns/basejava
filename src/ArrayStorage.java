@@ -5,23 +5,19 @@ import java.util.Arrays;
  */
 public class ArrayStorage {
     Resume[] storage = new Resume[10000];
+    private int size;
 
     void clear() {
-        Arrays.fill(storage, null);
+        Arrays.fill(storage, 0, size, null);
     }
 
     void save(Resume r) {
-        for (int i = 0; i < storage.length; i++) {
-            if (storage[i] == null) {
-                storage[i] = r;
-                break;
-            }
-        }
+        storage[size++] = r;
     }
 
     Resume get(String uuid) {
-        for (int i = 0; i < storage.length; i++) {
-            if (storage[i] != null && storage[i].uuid != null && storage[i].uuid.equals(uuid)) {
+        for (int i = 0; i < size; i++) {
+            if (storage[i].uuid.equals(uuid)) {
                 return storage[i];
             }
         }
@@ -30,16 +26,18 @@ public class ArrayStorage {
 
     void delete(String uuid) {
         int removeIndex = -1;
-        for (int i = 0; i < storage.length; i++) {
-            if (storage[i] != null && storage[i].uuid != null && storage[i].uuid.equals(uuid)) {
+        for (int i = 0; i < size; i++) {
+            if (storage[i].uuid.equals(uuid)) {
                 removeIndex = i;
                 break;
             }
         }
         if (removeIndex >= 0) {
-            for (int i = removeIndex; i < storage.length - 1; i++) {
+            for (int i = removeIndex; i < size - 1; i++) {
                 storage[i] = storage[i + 1];
             }
+            storage[size - 1] = null;
+            size--;
         }
     }
 
@@ -47,26 +45,10 @@ public class ArrayStorage {
      * @return array, contains only Resumes in storage (without null)
      */
     Resume[] getAll() {
-        int lastFilledIndex = 0;
-        for (int i = 0; i < storage.length; i++) {
-            if (storage[i] != null) {
-                lastFilledIndex = i;
-            } else {
-                break;
-            }
-        }
-        return Arrays.copyOf(storage, ++lastFilledIndex);
+        return Arrays.copyOf(storage, size);
     }
 
     int size() {
-        int storageSize = 0;
-        for (int i = 0; i < storage.length; i++) {
-            if (storage[i] != null) {
-                storageSize = i;
-            } else {
-                break;
-            }
-        }
-        return ++storageSize;
+        return size;
     }
 }

@@ -16,7 +16,6 @@ public class ArrayStorage {
     }
 
     public void update(Resume r) {
-        // TODO check if resume present
         if (exist(r.getUuid())) {
             System.out.println("I have no idea wat to do");
         } else {

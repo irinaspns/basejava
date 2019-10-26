@@ -9,7 +9,7 @@ import java.util.Arrays;
  */
 public class ArrayStorage {
     Resume[] storage = new Resume[10000];
-    public int size;
+    private int size;
 
     public void clear() {
         Arrays.fill(storage, 0, size, null);

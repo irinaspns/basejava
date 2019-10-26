@@ -16,15 +16,17 @@ public class ArrayStorage {
     }
 
     public void update(Resume r) {
-        if (exist(r.getUuid())) {
-            System.out.println("I have no idea wat to do");
+        int indexInStorage = positionInStorage(r.getUuid());
+        if (indexInStorage >= 0) {
+            storage[indexInStorage] = r;
         } else {
             System.out.println("Resume can not be updated. It's not found in storage. uuid = " + r.getUuid());
         }
     }
 
     public void save(Resume r) {
-        if (!exist(r.getUuid())) {
+        int indexInStorage = positionInStorage(r.getUuid());
+        if (indexInStorage < 0) {
             if (size < 1000) {
                 storage[size++] = r;
             } else {
@@ -37,7 +39,7 @@ public class ArrayStorage {
     }
 
     public Resume get(String uuid) {
-        if (exist(uuid)) {
+        if (positionInStorage(uuid) >= 0) {
             for (int i = 0; i < size; i++) {
                 if (storage[i].getUuid().equals(uuid)) {
                     return storage[i];
@@ -50,7 +52,7 @@ public class ArrayStorage {
     }
 
     public void delete(String uuid) {
-        if (exist(uuid)) {
+        if (positionInStorage(uuid) >= 0) {
             int removeIndex = -1;
             for (int i = 0; i < size; i++) {
                 if (storage[i].getUuid().equals(uuid)) {
@@ -79,12 +81,12 @@ public class ArrayStorage {
         return size;
     }
 
-    private boolean exist(String uuid) {
+    private int positionInStorage(String uuid) {
         for (int i = 0; i < size; i++) {
             if (storage[i].getUuid().equals(uuid)) {
-                return true;
+                return i;
             }
         }
-        return false;
+        return -1;
     }
 }

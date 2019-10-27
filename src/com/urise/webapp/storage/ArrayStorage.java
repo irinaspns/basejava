@@ -16,7 +16,7 @@ public class ArrayStorage {
     }
 
     public void update(Resume resume) {
-        int position = positionInStorage(resume.getUuid());
+        int position = getPositionInStorage(resume.getUuid());
         if (position >= 0) {
             storage[position] = resume;
         } else {
@@ -25,7 +25,7 @@ public class ArrayStorage {
     }
 
     public void save(Resume resume) {
-        int position = positionInStorage(resume.getUuid());
+        int position = getPositionInStorage(resume.getUuid());
         if (position < 0) {
             if (size < storage.length) {
                 storage[size++] = resume;
@@ -36,7 +36,7 @@ public class ArrayStorage {
     }
 
     public Resume get(String uuid) {
-        int position = positionInStorage(uuid);
+        int position = getPositionInStorage(uuid);
         if (position >= 0) {
             return storage[position];
         }
@@ -45,11 +45,10 @@ public class ArrayStorage {
     }
 
     public void delete(String uuid) {
-        int position = positionInStorage(uuid);
+        int position = getPositionInStorage(uuid);
         if (position >= 0) {
-            for (int i = position; i < size - 1; i++) {
-                storage[i] = storage[i + 1];
-            }
+            if (size - 1 - position >= 0)
+                System.arraycopy(storage, position + 1, storage, position, size - 1 - position);
             storage[size - 1] = null;
             size--;
         }
@@ -66,7 +65,7 @@ public class ArrayStorage {
         return size;
     }
 
-    private int positionInStorage(String uuid) {
+    private int getPositionInStorage(String uuid) {
         for (int i = 0; i < size; i++) {
             if (storage[i].getUuid().equals(uuid)) {
                 return i;

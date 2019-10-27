@@ -30,7 +30,7 @@ public class MainTestArrayStorage {
 
         ARRAY_STORAGE.update(r3);
 
-        ARRAY_STORAGE.delete(r1.getUuid());
+        ARRAY_STORAGE.delete(r3.getUuid());
         printAll();
 
         ARRAY_STORAGE.update(r1);

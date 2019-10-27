@@ -8,65 +8,53 @@ import java.util.Arrays;
  * Array based com.urise.webapp.storage for Resumes
  */
 public class ArrayStorage {
-    Resume[] storage = new Resume[10000];
+    private Resume[] storage = new Resume[10_000];
     private int size;
 
     public void clear() {
         Arrays.fill(storage, 0, size, null);
     }
 
-    public void update(Resume r) {
-        int indexInStorage = positionInStorage(r.getUuid());
-        if (indexInStorage >= 0) {
-            storage[indexInStorage] = r;
+    public void update(Resume resume) {
+        int position = positionInStorage(resume.getUuid());
+        if (position >= 0) {
+            storage[position] = resume;
         } else {
-            System.out.println("Resume can not be updated. It's not found in storage. uuid = " + r.getUuid());
+            System.out.println("Resume can not be updated. It's not found in storage. uuid = " + resume.getUuid());
         }
     }
 
-    public void save(Resume r) {
-        int indexInStorage = positionInStorage(r.getUuid());
-        if (indexInStorage < 0) {
-            if (size < 1000) {
-                storage[size++] = r;
+    public void save(Resume resume) {
+        int position = positionInStorage(resume.getUuid());
+        if (position < 0) {
+            if (size < storage.length) {
+                storage[size++] = resume;
             } else {
-                System.out.println("Limit of storage (1000) has been reached.");
+                System.out.println("Limit of storage has been reached.");
             }
-        } else {
-            // Or update(r) ?????
-            System.out.println("Resume can not be saved. It's already in storage. uuid = " + r.getUuid());
         }
     }
 
     public Resume get(String uuid) {
-        if (positionInStorage(uuid) >= 0) {
-            for (int i = 0; i < size; i++) {
-                if (storage[i].getUuid().equals(uuid)) {
-                    return storage[i];
-                }
-            }
-        } else {
-            System.out.println("There is no Resume with uuid = " + uuid + " in storage.");
+        int position = positionInStorage(uuid);
+        if (position >= 0) {
+            return storage[position];
         }
+        System.out.println("There is no Resume with uuid = " + uuid + " in storage.");
         return null;
     }
 
     public void delete(String uuid) {
-        if (positionInStorage(uuid) >= 0) {
-            int removeIndex = -1;
-            for (int i = 0; i < size; i++) {
-                if (storage[i].getUuid().equals(uuid)) {
-                    removeIndex = i;
-                    break;
-                }
+        int position = positionInStorage(uuid);
+        if (position >= 0) {
+            for (int i = position; i < size - 1; i++) {
+                storage[i] = storage[i + 1];
             }
-            if (removeIndex >= 0) {
-                for (int i = removeIndex; i < size - 1; i++) {
-                    storage[i] = storage[i + 1];
-                }
-                storage[size - 1] = null;
-                size--;
-            }
+            storage[size - 1] = null;
+            size--;
+        }
+        {
+            System.out.println("There is no Resume to delete with uuid = " + uuid + " in storage.");
         }
     }
 

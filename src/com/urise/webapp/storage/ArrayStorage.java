@@ -53,9 +53,6 @@ public class ArrayStorage {
             storage[size - 1] = null;
             size--;
         }
-        {
-            System.out.println("There is no Resume to delete with uuid = " + uuid + " in storage.");
-        }
     }
 
     /**

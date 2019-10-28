@@ -2,23 +2,13 @@ package com.urise.webapp.storage;
 
 import com.urise.webapp.model.Resume;
 
-import java.util.Arrays;
-
 /**
  * Array based com.urise.webapp.storage for Resumes
  */
-public class ArrayStorage implements Storage {
-    private static final int LIMIT = 10_000;
-    private Resume[] storage = new Resume[LIMIT];
-    private int size;
-
-    public void clear() {
-        Arrays.fill(storage, 0, size, null);
-        size = 0;
-    }
+public class ArrayStorage extends AbstractArrayStorage {
 
     public void update(Resume resume) {
-        int position = getPositionInStorage(resume.getUuid());
+        int position = getIndex(resume.getUuid());
         if (position >= 0) {
             storage[position] = resume;
         } else {
@@ -27,7 +17,7 @@ public class ArrayStorage implements Storage {
     }
 
     public void save(Resume resume) {
-        int position = getPositionInStorage(resume.getUuid());
+        int position = getIndex(resume.getUuid());
         if (position < 0) {
             if (size < storage.length) {
                 storage[size++] = resume;
@@ -38,7 +28,7 @@ public class ArrayStorage implements Storage {
     }
 
     public Resume get(String uuid) {
-        int position = getPositionInStorage(uuid);
+        int position = getIndex(uuid);
         if (position >= 0) {
             return storage[position];
         }
@@ -47,7 +37,7 @@ public class ArrayStorage implements Storage {
     }
 
     public void delete(String uuid) {
-        int position = getPositionInStorage(uuid);
+        int position = getIndex(uuid);
         if (position >= 0) {
             if (size - 1 - position >= 0) {
                 System.arraycopy(storage, position + 1, storage, position, size - 1 - position);
@@ -59,18 +49,8 @@ public class ArrayStorage implements Storage {
         }
     }
 
-    /**
-     * @return array, contains only Resumes in com.urise.webapp.storage (without null)
-     */
-    public Resume[] getAll() {
-        return Arrays.copyOf(storage, size);
-    }
-
-    public int size() {
-        return size;
-    }
-
-    private int getPositionInStorage(String uuid) {
+    @Override
+    protected int getIndex(String uuid) {
         for (int i = 0; i < size; i++) {
             if (storage[i].getUuid().equals(uuid)) {
                 return i;

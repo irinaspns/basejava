@@ -7,7 +7,7 @@ import java.util.Arrays;
 /**
  * Array based com.urise.webapp.storage for Resumes
  */
-public class ArrayStorage {
+public class ArrayStorage implements Storage {
     private static final int LIMIT = 10_000;
     private Resume[] storage = new Resume[LIMIT];
     private int size;

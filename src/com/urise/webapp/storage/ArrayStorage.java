@@ -13,6 +13,7 @@ public class ArrayStorage {
 
     public void clear() {
         Arrays.fill(storage, 0, size, null);
+        size = 0;
     }
 
     public void update(Resume resume) {
@@ -52,6 +53,8 @@ public class ArrayStorage {
             }
             storage[size - 1] = null;
             size--;
+        } else {
+            System.out.println("Nothing to delete. No Resume with uuid = " + uuid + " in storage.");
         }
     }
 

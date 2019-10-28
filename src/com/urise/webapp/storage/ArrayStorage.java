@@ -39,9 +39,7 @@ public class ArrayStorage extends AbstractArrayStorage {
     public void delete(String uuid) {
         int position = getIndex(uuid);
         if (position >= 0) {
-            if (size - 1 - position >= 0) {
-                System.arraycopy(storage, position + 1, storage, position, size - 1 - position);
-            }
+            System.arraycopy(storage, position + 1, storage, position, size - 1 - position);
             storage[size - 1] = null;
             size--;
         } else {

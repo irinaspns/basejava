@@ -17,6 +17,24 @@ public abstract class AbstractArrayStorage implements Storage {
         size = 0;
     }
 
+    public void update(Resume resume) {
+        int index = getIndex(resume.getUuid());
+        if (index >= 0) {
+            storage[index] = resume;
+        } else {
+            System.out.println("Resume can not be updated. It's not found in storage. uuid = " + resume.getUuid());
+        }
+    }
+
+    public Resume get(String uuid) {
+        int index = getIndex(uuid);
+        if (index >= 0) {
+            return storage[index];
+        }
+        System.out.println("There is no Resume with uuid = " + uuid + " in storage.");
+        return null;
+    }
+
     /**
      * @return array, contains only Resumes in com.urise.webapp.storage (without null)
      */
@@ -24,9 +42,9 @@ public abstract class AbstractArrayStorage implements Storage {
         return Arrays.copyOf(storage, size);
     }
 
-    protected abstract int getIndex(String uuid);
-
     public int getSize() {
         return size;
     }
+
+    protected abstract int getIndex(String uuid);
 }

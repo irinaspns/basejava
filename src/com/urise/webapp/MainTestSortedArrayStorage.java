@@ -37,8 +37,10 @@ public class MainTestSortedArrayStorage {
 
         ARRAY_STORAGE.update(r3);
 
+        System.out.println("Size for delete : " + ARRAY_STORAGE.getSize());
         ARRAY_STORAGE.delete(r3.getUuid());
         printAll();
+        System.out.println("Size after delete : " + ARRAY_STORAGE.getSize());
 
         ARRAY_STORAGE.update(r1);
 

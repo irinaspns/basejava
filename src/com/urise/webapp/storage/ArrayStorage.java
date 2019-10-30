@@ -1,22 +1,9 @@
 package com.urise.webapp.storage;
 
-import com.urise.webapp.model.Resume;
-
 /**
  * Array based com.urise.webapp.storage for Resumes
  */
 public class ArrayStorage extends AbstractArrayStorage {
-
-    public void save(Resume resume) {
-        int index = getIndex(resume.getUuid());
-        if (index < 0) {
-            if (size < storage.length) {
-                storage[size++] = resume;
-            } else {
-                System.out.println("Limit of storage has been reached.");
-            }
-        }
-    }
 
     public void delete(String uuid) {
         int index = getIndex(uuid);

@@ -9,17 +9,14 @@ import java.util.Arrays;
  */
 public class SortedArrayStorage extends AbstractArrayStorage {
 
+    public void update(Resume resume) {
+        super.save(resume);
+        sort();
+    }
+
     public void save(Resume resume) {
-        int index = getIndex(resume.getUuid());
-        if (index < 0) {
-            if (size < storage.length) {
-                storage[size] = resume;
-                size++;
-                sort();
-            } else {
-                System.out.println("Limit of storage has been reached.");
-            }
-        }
+        super.save(resume);
+        sort();
     }
 
     public void delete(String uuid) {

@@ -9,44 +9,29 @@ import java.util.Arrays;
  */
 public class SortedArrayStorage extends AbstractArrayStorage {
 
-    public void update(Resume resume) {
-        super.save(resume);
-        sort();
-    }
-
     public void save(Resume resume) {
-        super.save(resume);
-        sort();
+        int index = getIndex(resume.getUuid());
+        if (index < 0) {
+            if (size < storage.length) {
+                int insertIndex = -index - 1;
+                System.arraycopy(storage, insertIndex, storage, insertIndex + 1, size - insertIndex);
+                storage[insertIndex] = resume;
+                size++;
+            } else {
+                System.out.println("Limit of storage has been reached.");
+            }
+        }
     }
 
     public void delete(String uuid) {
         int index = getIndex(uuid);
         if (index >= 0) {
-            Resume[] first = Arrays.copyOfRange(storage, 0, index);
-            Resume[] second = Arrays.copyOfRange(storage, index + 1, size);
-            storage = concat(first, second);
+            System.arraycopy(storage, index + 1, storage, index, size - index - 1);
+            storage[size-1] = null;
             size--;
         } else {
             System.out.println("Nothing to delete. No Resume with uuid = " + uuid + " in storage.");
         }
-    }
-
-    private void sort() {
-        for (int i = 1; i < size; i++) {
-            Resume resume = storage[i];
-            // Find location to insert using binary search
-            int j = Math.abs(Arrays.binarySearch(storage, 0, i, resume) + 1);
-            //Shifting array to one location right
-            System.arraycopy(storage, j, storage, j + 1, i - j);
-            //Placing element at its correct location
-            storage[j] = resume;
-        }
-    }
-
-    private Resume[] concat(Resume[] first, Resume[] second) {
-        Resume[] result = Arrays.copyOf(first, first.length + second.length);
-        System.arraycopy(second, 0, result, first.length, second.length);
-        return result;
     }
 
     @Override

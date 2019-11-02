@@ -7,18 +7,6 @@ import com.urise.webapp.model.Resume;
  */
 public class ArrayStorage extends AbstractArrayStorage {
 
-    public void save(Resume resume) {
-        int index = getIndex(resume.getUuid());
-        if (index < 0) {
-            if (size < storage.length) {
-                storage[size] = resume;
-                size++;
-            } else {
-                System.out.println("Limit of storage has been reached.");
-            }
-        }
-    }
-
     public void delete(String uuid) {
         int index = getIndex(uuid);
         if (index >= 0) {
@@ -38,5 +26,10 @@ public class ArrayStorage extends AbstractArrayStorage {
             }
         }
         return -1;
+    }
+
+    @Override
+    protected void insert(Resume resume, int index) {
+        storage[size] = resume;
     }
 }

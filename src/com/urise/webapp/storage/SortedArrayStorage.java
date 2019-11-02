@@ -9,17 +9,6 @@ import java.util.Arrays;
  */
 public class SortedArrayStorage extends AbstractArrayStorage {
 
-    public void delete(String uuid) {
-        int index = getIndex(uuid);
-        if (index >= 0) {
-            System.arraycopy(storage, index + 1, storage, index, size - index - 1);
-            storage[size - 1] = null;
-            size--;
-        } else {
-            System.out.println("Nothing to delete. No Resume with uuid = " + uuid + " in storage.");
-        }
-    }
-
     @Override
     protected int getIndex(String uuid) {
         Resume searchKey = new Resume();
@@ -32,5 +21,10 @@ public class SortedArrayStorage extends AbstractArrayStorage {
         int insertIndex = -index - 1;
         System.arraycopy(storage, insertIndex, storage, insertIndex + 1, size - insertIndex);
         storage[insertIndex] = resume;
+    }
+
+    @Override
+    protected void subDelete(int index) {
+        System.arraycopy(storage, index + 1, storage, index, size - index - 1);
     }
 }

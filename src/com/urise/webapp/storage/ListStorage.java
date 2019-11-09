@@ -16,10 +16,6 @@ public class ListStorage extends AbstractStorage {
         storage.clear();
     }
 
-    protected void subSave(int index, Resume resume) {
-        storage.add(resume);
-    }
-
     public Resume[] getAll() {
         return (Resume[]) storage.toArray();
     }
@@ -30,6 +26,10 @@ public class ListStorage extends AbstractStorage {
 
     protected void subUpdate(int index, Resume resume) {
         storage.add(index, resume);
+    }
+
+    protected void subSave(int index, Resume resume) {
+        storage.add(resume);
     }
 
     protected void subDelete(int index, String uuid) {

@@ -27,7 +27,6 @@ public abstract class AbstractStorage implements Storage {
         }
     }
 
-
     public void delete(String uuid) {
         int index = getIndex(uuid);
         if (index >= 0) {

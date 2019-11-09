@@ -34,11 +34,6 @@ public abstract class AbstractStorage implements Storage {
         throw new NotExistStorageException(uuid);
     }
 
-    public abstract Resume[] getAll();
-    public abstract int getSize();
-    public abstract void clear();
-    public abstract void save(Resume resume);
-
     protected abstract int getIndex(String uuid);
     protected abstract void subUpdate(int index, Resume resume);
     protected abstract Resume subGet(int index, String uuid);

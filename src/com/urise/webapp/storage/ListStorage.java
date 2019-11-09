@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Array based com.urise.webapp.storage for Resumes
+ * List based com.urise.webapp.storage for Resumes
  */
 public class ListStorage extends AbstractStorage {
 

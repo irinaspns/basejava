@@ -47,7 +47,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     protected void subDelete(int index, String uuid) {
-        subSubDelete(index);
+        arraySubDelete(index);
         storage[size - 1] = null;
         size--;
     }
@@ -56,6 +56,6 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         return storage[index];
     }
 
-    protected abstract void subSubDelete(int index);
+    protected abstract void arraySubDelete(int index);
     protected abstract void insert(Resume resume, int index);
 }

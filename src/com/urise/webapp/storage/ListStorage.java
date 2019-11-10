@@ -17,7 +17,7 @@ public class ListStorage extends AbstractStorage {
     }
 
     public Resume[] getAll() {
-        return storage.toArray(new Resume[storage.size()]);
+        return storage.toArray(new Resume[0]);
     }
 
     public int getSize() {
@@ -41,7 +41,7 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    protected int getIndex(String uuid) {
+    protected int getPosition(String uuid) {
         return storage.indexOf(new Resume(uuid));
     }
 

@@ -16,7 +16,7 @@ public class MapStorage extends AbstractStorage {
     }
 
     public Resume[] getAll() {
-        return (Resume[]) storage.values().toArray(new Resume[storage.size()]);
+        return storage.values().toArray(new Resume[0]);
     }
 
     public int getSize() {
@@ -40,7 +40,7 @@ public class MapStorage extends AbstractStorage {
     }
 
     @Override
-    protected int getIndex(String uuid) {
+    protected int getPosition(String uuid) {
         return storage.get(uuid) == null ? -1 : 0;
     }
 

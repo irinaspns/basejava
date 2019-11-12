@@ -14,12 +14,7 @@ public abstract class AbstractStorage implements Storage {
     }
 
     public void save(Resume resume) {
-        int position = getPosition(resume.getUuid());
-        if (position < 0) {
-            subSave(position, resume);
-        } else {
-            throw new ExistStorageException(resume.getUuid());
-        }
+        subSave(checkNotExist(resume.getUuid()), resume);
     }
 
     public void delete(String uuid) {
@@ -30,21 +25,36 @@ public abstract class AbstractStorage implements Storage {
         return subGet(checkExist(uuid), uuid);
     }
 
-    private int checkExist(String uuid) {
-        int position = getPosition(uuid);
-        if (position >= 0) {
-            return position;
+    private Object checkExist(String uuid) {
+        Object obj = findElement(uuid);
+        if (obj != null) {
+            return obj;
         }
         throw new NotExistStorageException(uuid);
     }
 
-    protected abstract int getPosition(String uuid);
+    private Object checkNotExist(String uuid) {
+        Object obj = findElement(uuid);
+        if (obj == null) {
+            return obj;
+        }
+        throw new ExistStorageException(uuid);
+    }
 
-    protected abstract void subUpdate(int position, Resume resume);
+    protected abstract Object findElement(String uuid);
 
-    protected abstract void subSave(int position, Resume resume);
+    protected abstract void subUpdate(Object obj, Resume resume);
 
-    protected abstract Resume subGet(int position, String uuid);
+    protected abstract void subSave(Object obj, Resume resume);
 
-    protected abstract void subDelete(int position, String uuid);
+    protected abstract Resume subGet(Object obj, String uuid);
+
+    protected abstract void subDelete(Object obj, String uuid);
+
+    protected int getInteger(Object object) {
+        return object == null ? -1 : (Integer) object;
+    }
+    protected String getString(Object object) {
+        return (String) object;
+    }
 }

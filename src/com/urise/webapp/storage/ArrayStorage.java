@@ -8,13 +8,13 @@ import com.urise.webapp.model.Resume;
 public class ArrayStorage extends AbstractArrayStorage {
 
     @Override
-    protected int getPosition(String uuid) {
+    protected Object findElement(String uuid) {
         for (int i = 0; i < size; i++) {
             if (storage[i].getUuid().equals(uuid)) {
-                return i;
+                return Integer.valueOf(i);
             }
         }
-        return -1;
+        return null;
     }
 
     @Override

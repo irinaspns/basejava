@@ -23,25 +23,25 @@ public class MapStorage extends AbstractStorage {
         return storage.size();
     }
 
-    protected void subUpdate(int index, Resume resume) {
-        subSave(index, resume);
+    protected void subUpdate(Object obj, Resume resume) {
+        subSave(getString(obj), resume);
     }
 
-    protected void subSave(int index, Resume resume) {
+    protected void subSave(Object obj, Resume resume) {
         storage.put(resume.getUuid(), resume);
     }
 
-    protected void subDelete(int index, String uuid) {
+    protected void subDelete(Object obj, String uuid) {
         storage.remove(uuid);
     }
 
-    protected Resume subGet(int index, String uuid) {
+    protected Resume subGet(Object obj, String uuid) {
         return storage.get(uuid);
     }
 
     @Override
-    protected int getPosition(String uuid) {
-        return storage.get(uuid) == null ? -1 : 0;
+    protected Object findElement(String uuid) {
+        return storage.get(uuid) == null ? null : uuid;
     }
 
 }

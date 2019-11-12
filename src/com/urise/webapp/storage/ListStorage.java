@@ -24,25 +24,26 @@ public class ListStorage extends AbstractStorage {
         return storage.size();
     }
 
-    protected void subUpdate(int index, Resume resume) {
-        storage.set(index, resume);
+    protected void subUpdate(Object obj, Resume resume) {
+        storage.set(getInteger(obj), resume);
     }
 
-    protected void subSave(int index, Resume resume) {
+    protected void subSave(Object obj, Resume resume) {
         storage.add(resume);
     }
 
-    protected void subDelete(int index, String uuid) {
-        storage.remove(index);
+    protected void subDelete(Object obj, String uuid) {
+        storage.remove(getInteger(obj));
     }
 
-    protected Resume subGet(int index, String uuid) {
-        return storage.get(index);
+    protected Resume subGet(Object obj, String uuid) {
+        return storage.get(getInteger(obj));
     }
 
     @Override
-    protected int getPosition(String uuid) {
-        return storage.indexOf(new Resume(uuid));
+    protected Object findElement(String uuid) {
+        int index = storage.indexOf(new Resume(uuid));
+        return index >= 0 ? Integer.valueOf(index) : null;
     }
 
 }

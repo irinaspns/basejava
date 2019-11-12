@@ -27,26 +27,26 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         return size;
     }
 
-    protected void subUpdate(int index, Resume resume) {
-        storage[index] = resume;
+    protected void subUpdate(Object obj, Resume resume) {
+        storage[getInteger(obj)] = resume;
     }
 
-    protected void subSave(int index, Resume resume) {
+    protected void subSave(Object obj, Resume resume) {
         if (size == LIMIT) {
             throw new StorageException("Storage overflow", resume.getUuid());
         }
-        insert(index, resume);
+        insert(getInteger(obj), resume);
         size++;
     }
 
-    protected void subDelete(int index, String uuid) {
-        fillElement(index);
+    protected void subDelete(Object obj, String uuid) {
+        fillElement(getInteger(obj));
         storage[size - 1] = null;
         size--;
     }
 
-    protected Resume subGet(int index, String uuid) {
-        return storage[index];
+    protected Resume subGet(Object obj, String uuid) {
+        return storage[getInteger(obj)];
     }
 
     protected abstract void fillElement(int index);

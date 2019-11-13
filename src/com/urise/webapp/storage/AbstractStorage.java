@@ -51,7 +51,4 @@ public abstract class AbstractStorage implements Storage {
     protected int getInteger(Object searchKey) {
         return searchKey == null ? -1 : (Integer) searchKey;
     }
-    protected String getString(Object searchKey) {
-        return (String) searchKey;
-    }
 }

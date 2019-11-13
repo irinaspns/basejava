@@ -24,7 +24,7 @@ public class MapStorage extends AbstractStorage {
     }
 
     protected void subUpdate(Object searchKey, Resume resume) {
-        subSave(getString(searchKey), resume);
+        subSave(searchKey.toString(), resume);
     }
 
     protected void subSave(Object searchKey, Resume resume) {

@@ -4,9 +4,6 @@ import com.urise.webapp.exception.ExistStorageException;
 import com.urise.webapp.exception.NotExistStorageException;
 import com.urise.webapp.model.Resume;
 
-/**
- * Array based com.urise.webapp.storage for Resumes
- */
 public abstract class AbstractStorage implements Storage {
 
     public void update(Resume resume) {
@@ -26,35 +23,35 @@ public abstract class AbstractStorage implements Storage {
     }
 
     private Object checkExist(String uuid) {
-        Object obj = findElement(uuid);
-        if (obj != null) {
-            return obj;
+        Object searchKey = findElement(uuid);
+        if (searchKey != null) {
+            return searchKey;
         }
         throw new NotExistStorageException(uuid);
     }
 
     private Object checkNotExist(String uuid) {
-        Object obj = findElement(uuid);
-        if (obj == null) {
-            return obj;
+        Object searchKey = findElement(uuid);
+        if (searchKey == null) {
+            return searchKey;
         }
         throw new ExistStorageException(uuid);
     }
 
     protected abstract Object findElement(String uuid);
 
-    protected abstract void subUpdate(Object obj, Resume resume);
+    protected abstract void subUpdate(Object searchKey, Resume resume);
 
-    protected abstract void subSave(Object obj, Resume resume);
+    protected abstract void subSave(Object searchKey, Resume resume);
 
-    protected abstract Resume subGet(Object obj, String uuid);
+    protected abstract Resume subGet(Object searchKey, String uuid);
 
-    protected abstract void subDelete(Object obj, String uuid);
+    protected abstract void subDelete(Object searchKey, String uuid);
 
-    protected int getInteger(Object object) {
-        return object == null ? -1 : (Integer) object;
+    protected int getInteger(Object searchKey) {
+        return searchKey == null ? -1 : (Integer) searchKey;
     }
-    protected String getString(Object object) {
-        return (String) object;
+    protected String getString(Object searchKey) {
+        return (String) searchKey;
     }
 }

@@ -23,19 +23,19 @@ public class MapStorage extends AbstractStorage {
         return storage.size();
     }
 
-    protected void subUpdate(Object obj, Resume resume) {
-        subSave(getString(obj), resume);
+    protected void subUpdate(Object searchKey, Resume resume) {
+        subSave(getString(searchKey), resume);
     }
 
-    protected void subSave(Object obj, Resume resume) {
+    protected void subSave(Object searchKey, Resume resume) {
         storage.put(resume.getUuid(), resume);
     }
 
-    protected void subDelete(Object obj, String uuid) {
+    protected void subDelete(Object searchKey, String uuid) {
         storage.remove(uuid);
     }
 
-    protected Resume subGet(Object obj, String uuid) {
+    protected Resume subGet(Object searchKey, String uuid) {
         return storage.get(uuid);
     }
 

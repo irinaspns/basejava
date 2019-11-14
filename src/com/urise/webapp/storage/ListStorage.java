@@ -41,9 +41,14 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
+    protected boolean isSubIsExist(Object searchKey) {
+        return searchKey == null ? false : true;
+    }
+
+    @Override
     protected Object findElement(String uuid) {
         int index = storage.indexOf(new Resume(uuid));
-        return index >= 0 ? Integer.valueOf(index) : null;
+        return index >= 0 ? index : null;
     }
 
 }

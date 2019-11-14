@@ -49,6 +49,14 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         return storage[getInteger(searchKey)];
     }
 
+    @Override
+    protected boolean isSubIsExist(Object searchKey) {
+        if (searchKey == null || searchKey.toString().compareTo("0") < 0) {
+            return false;
+        }
+        return true;
+    }
+
     protected abstract void fillElement(int index);
 
     protected abstract void insert(int index, Resume resume);

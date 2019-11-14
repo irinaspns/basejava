@@ -40,6 +40,11 @@ public class MapStorage extends AbstractStorage {
     }
 
     @Override
+    protected boolean isSubIsExist(Object searchKey) {
+        return searchKey == null ? false : true;
+    }
+
+    @Override
     protected Object findElement(String uuid) {
         return storage.get(uuid) == null ? null : uuid;
     }

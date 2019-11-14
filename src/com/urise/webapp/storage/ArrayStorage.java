@@ -11,7 +11,7 @@ public class ArrayStorage extends AbstractArrayStorage {
     protected Object findElement(String uuid) {
         for (int i = 0; i < size; i++) {
             if (storage[i].getUuid().equals(uuid)) {
-                return Integer.valueOf(i);
+                return i;
             }
         }
         return null;

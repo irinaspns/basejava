@@ -38,11 +38,7 @@ public abstract class AbstractStorage implements Storage {
         return searchKey;
     }
 
-    private boolean isExist(Object searchKey) {
-        return isSubIsExist(searchKey);
-    }
-
-    protected abstract boolean isSubIsExist(Object searchKey);
+    protected abstract boolean isExist(Object searchKey);
 
     protected abstract Object findElement(String uuid);
 

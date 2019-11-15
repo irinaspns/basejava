@@ -7,7 +7,7 @@ import java.util.*;
 /**
  * Map based com.urise.webapp.storage for Resumes
  */
-public class MapStorage extends AbstractStorage {
+public class MapUuidStorage extends AbstractStorage {
 
     private Map<String, Resume> storage = new HashMap<>();
 
@@ -19,24 +19,24 @@ public class MapStorage extends AbstractStorage {
         return storage.values().toArray(new Resume[0]);
     }
 
-    public int getSize() {
+    public int size() {
         return storage.size();
     }
 
-    protected void subUpdate(Object searchKey, Resume resume) {
-        subSave(searchKey.toString(), resume);
+    protected void doUpdate(Resume resume, Object searchKey) {
+        storage.put(searchKey.toString(), resume);
     }
 
-    protected void subSave(Object searchKey, Resume resume) {
+    protected void doSave(Resume resume, Object searchKey) {
         storage.put(resume.getUuid(), resume);
     }
 
-    protected void subDelete(Object searchKey, String uuid) {
-        storage.remove(uuid);
+    protected void doDelete(Object searchKey) {
+        storage.remove(searchKey);
     }
 
-    protected Resume subGet(Object searchKey, String uuid) {
-        return storage.get(uuid);
+    protected Resume doGet(Object searchKey) {
+        return storage.get(searchKey);
     }
 
     @Override
@@ -45,7 +45,7 @@ public class MapStorage extends AbstractStorage {
     }
 
     @Override
-    protected String findElement(String uuid) {
+    protected String getSearchKey(String uuid) {
         return storage.get(uuid) == null ? null : uuid;
     }
 }

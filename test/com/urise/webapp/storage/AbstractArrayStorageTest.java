@@ -5,7 +5,7 @@ import com.urise.webapp.model.Resume;
 import org.junit.Assert;
 import org.junit.Test;
 
-import static com.urise.webapp.storage.AbstractArrayStorage.LIMIT;
+import static com.urise.webapp.storage.AbstractArrayStorage.STORAGE_LIMIT;
 
 public abstract class AbstractArrayStorageTest extends AbstractStorageTest {
 
@@ -16,7 +16,7 @@ public abstract class AbstractArrayStorageTest extends AbstractStorageTest {
     @Test(expected = StorageException.class)
     public void saveOverflow() {
         try {
-            for (int i = storage.getSize(); i < LIMIT; i++) {
+            for (int i = storage.size(); i < STORAGE_LIMIT; i++) {
                 storage.save(new Resume());
             }
         } catch (StorageException se) {

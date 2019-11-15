@@ -24,7 +24,7 @@ public class MainTestSortedArrayStorage {
         ARRAY_STORAGE.save(r1);
 
         System.out.println("Get r1: " + ARRAY_STORAGE.get(r1.getUuid()));
-        System.out.println("Size: " + ARRAY_STORAGE.getSize());
+        System.out.println("Size: " + ARRAY_STORAGE.size());
 
         System.out.println("Get dummy: " + ARRAY_STORAGE.get("dummy"));
 
@@ -32,17 +32,17 @@ public class MainTestSortedArrayStorage {
 
         ARRAY_STORAGE.update(r3);
 
-        System.out.println("Size for delete : " + ARRAY_STORAGE.getSize());
+        System.out.println("Size for delete : " + ARRAY_STORAGE.size());
         ARRAY_STORAGE.delete(r3.getUuid());
         printAll();
-        System.out.println("Size after delete : " + ARRAY_STORAGE.getSize());
+        System.out.println("Size after delete : " + ARRAY_STORAGE.size());
 
         ARRAY_STORAGE.update(r1);
 
         ARRAY_STORAGE.clear();
         printAll();
 
-        System.out.println("Size: " + ARRAY_STORAGE.getSize());
+        System.out.println("Size: " + ARRAY_STORAGE.size());
     }
 
     static void printAll() {

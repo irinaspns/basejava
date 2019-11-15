@@ -10,34 +10,16 @@ import java.util.List;
  */
 public class ListStorage extends AbstractStorage {
 
-    private List<Resume> storage = new ArrayList<>();
+    private List<Resume> list = new ArrayList<>();
 
-    public void clear() {
-        storage.clear();
-    }
-
-    public Resume[] getAll() {
-        return storage.toArray(new Resume[0]);
-    }
-
-    public int getSize() {
-        return storage.size();
-    }
-
-    protected void subUpdate(Object searchKey, Resume resume) {
-        storage.set((int) searchKey, resume);
-    }
-
-    protected void subSave(Object searchKey, Resume resume) {
-        storage.add(resume);
-    }
-
-    protected void subDelete(Object searchKey, String uuid) {
-        storage.remove((int) searchKey);
-    }
-
-    protected Resume subGet(Object searchKey, String uuid) {
-        return storage.get((int) searchKey);
+    @Override
+    protected Integer getSearchKey(String uuid) {
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i).getUuid().equals(uuid)) {
+                return i;
+            }
+        }
+        return null;
     }
 
     @Override
@@ -46,8 +28,37 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    protected Integer findElement(String uuid) {
-        int index = storage.indexOf(new Resume(uuid));
-        return index >= 0 ? index : null;
+    protected void doUpdate(Resume r, Object searchKey) {
+        list.set((Integer) searchKey, r);
+    }
+
+    @Override
+    protected void doSave(Resume r, Object searchKey) {
+        list.add(r);
+    }
+
+    @Override
+    protected Resume doGet(Object searchKey) {
+        return list.get((Integer) searchKey);
+    }
+
+    @Override
+    protected void doDelete(Object searchKey) {
+        list.remove(((Integer) searchKey).intValue());
+    }
+
+    @Override
+    public void clear() {
+        list.clear();
+    }
+
+    @Override
+    public Resume[] getAll() {
+        return list.toArray(new Resume[list.size()]);
+    }
+
+    @Override
+    public int size() {
+        return list.size();
     }
 }

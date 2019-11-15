@@ -28,30 +28,30 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     protected void subUpdate(Object searchKey, Resume resume) {
-        storage[getInteger(searchKey)] = resume;
+        storage[(int) searchKey] = resume;
     }
 
     protected void subSave(Object searchKey, Resume resume) {
         if (size == LIMIT) {
             throw new StorageException("Storage overflow", resume.getUuid());
         }
-        insert(getInteger(searchKey), resume);
+        insert((int) searchKey, resume);
         size++;
     }
 
     protected void subDelete(Object searchKey, String uuid) {
-        fillElement(getInteger(searchKey));
+        fillElement((int) searchKey);
         storage[size - 1] = null;
         size--;
     }
 
     protected Resume subGet(Object searchKey, String uuid) {
-        return storage[getInteger(searchKey)];
+        return storage[(int) searchKey];
     }
 
     @Override
     protected boolean isSubIsExist(Object searchKey) {
-        if (searchKey == null || searchKey.toString().compareTo("0") < 0) {
+        if (searchKey == null || (int) searchKey < 0) {
             return false;
         }
         return true;

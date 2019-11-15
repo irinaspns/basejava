@@ -53,8 +53,4 @@ public abstract class AbstractStorage implements Storage {
     protected abstract Resume subGet(Object searchKey, String uuid);
 
     protected abstract void subDelete(Object searchKey, String uuid);
-
-    protected int getInteger(Object searchKey) {
-        return searchKey == null ? -1 : (Integer) searchKey;
-    }
 }

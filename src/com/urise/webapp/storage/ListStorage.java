@@ -25,7 +25,7 @@ public class ListStorage extends AbstractStorage {
     }
 
     protected void subUpdate(Object searchKey, Resume resume) {
-        storage.set(getInteger(searchKey), resume);
+        storage.set((int) searchKey, resume);
     }
 
     protected void subSave(Object searchKey, Resume resume) {
@@ -33,11 +33,11 @@ public class ListStorage extends AbstractStorage {
     }
 
     protected void subDelete(Object searchKey, String uuid) {
-        storage.remove(getInteger(searchKey));
+        storage.remove((int) searchKey);
     }
 
     protected Resume subGet(Object searchKey, String uuid) {
-        return storage.get(getInteger(searchKey));
+        return storage.get((int) searchKey);
     }
 
     @Override

@@ -51,7 +51,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
 
     @Override
     protected boolean isExist(Object searchKey) {
-        return (int) searchKey < 0 ? false : true;
+        return (int) searchKey >= 0;
     }
 
     protected abstract void fillElement(int index);

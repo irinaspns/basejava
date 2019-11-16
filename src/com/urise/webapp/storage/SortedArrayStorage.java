@@ -3,7 +3,6 @@ package com.urise.webapp.storage;
 import com.urise.webapp.model.Resume;
 
 import java.util.Arrays;
-import java.util.Comparator;
 
 /**
  * Array based com.urise.webapp.storage for Resumes
@@ -18,8 +17,6 @@ public class SortedArrayStorage extends AbstractArrayStorage {
         }
     }
 */
-
-    private static final Comparator<Resume> RESUME_COMPARATOR = Comparator.comparing(Resume::getUuid);
 
     @Override
     protected void fillDeletedElement(int index) {

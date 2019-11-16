@@ -3,7 +3,9 @@ package com.urise.webapp.storage;
 import com.urise.webapp.model.Resume;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * List based com.urise.webapp.storage for Resumes
@@ -52,9 +54,16 @@ public class ListStorage extends AbstractStorage {
         list.clear();
     }
 
+//    @Override
+//    public Resume[] getAllSorted() {
+//        return list.toArray(new Resume[list.size()]);
+//    }
+
     @Override
-    public Resume[] getAll() {
-        return list.toArray(new Resume[list.size()]);
+    public List<Resume> getAllSorted() {
+        return list.stream()
+                .sorted(Comparator.comparing(Resume::getUuid))
+                .collect(Collectors.toList());
     }
 
     @Override

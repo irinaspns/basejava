@@ -18,6 +18,13 @@ public class SortedArrayStorage extends AbstractArrayStorage {
     }
 */
 
+//    private static final Comparator<Resume> RESUME_COMPARATOR = new Comparator<Resume>() {
+//        @Override
+//        public int compare(Resume o1, Resume o2) {
+//            return o1.getUuid().compareTo(o2.getUuid());
+//        }
+//    };
+
     @Override
     protected void fillDeletedElement(int index) {
         int numMoved = size - index - 1;
@@ -27,10 +34,10 @@ public class SortedArrayStorage extends AbstractArrayStorage {
     }
 
     @Override
-    protected void insertElement(Resume r, int index) {
+    protected void insertElement(Resume resume, int index) {
         int insertIdx = -index - 1;
         System.arraycopy(storage, insertIdx, storage, insertIdx + 1, size - insertIdx);
-        storage[insertIdx] = r;
+        storage[insertIdx] = resume;
     }
 
     @Override

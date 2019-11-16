@@ -1,7 +1,6 @@
 package com.urise.webapp.model;
 
 import java.util.Objects;
-import java.util.UUID;
 
 /**
  * Initial resume class
@@ -11,10 +10,6 @@ public class Resume {
     // Unique identifier
     private final String uuid;
     private final String fullName;
-
-    public Resume() {
-        this(UUID.randomUUID().toString());
-    }
 
     public Resume(String uuid) {
         this(uuid, null);

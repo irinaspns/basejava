@@ -7,9 +7,11 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
 
 public abstract class AbstractStorageTest {
 
@@ -21,11 +23,11 @@ public abstract class AbstractStorageTest {
     private static final String UUID_4 = "uuid4";
     private static final String UUID_DUMMY = "uuidDummy";
 
-    private static final String NAAM_1 = "O Zarubina";
-    private static final String NAAM_2 = "V Lanovoj";
-    private static final String NAAM_3 = "I Alfjorova";
-    private static final String NAAM_4 = "A Abdulov";
-    private static final String NAAM_DUMMY = "K Nikto";
+    private static final String NAAM_1 = "Zarubina O";
+    private static final String NAAM_2 = "Laboda S";
+    private static final String NAAM_3 = "Antonov J";
+    private static final String NAAM_4 = "Neznaju T";
+    private static final String NAAM_DUMMY = "Undefined W";
 
     private static final Resume RESUME_1;
     private static final Resume RESUME_2;
@@ -77,9 +79,14 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void getAllSorted() {
+        List<Resume> expectedList = new ArrayList<>();
+        expectedList.add(RESUME_3);
+        expectedList.add(RESUME_2);
+        expectedList.add(RESUME_1);
+
         List<Resume> resumes = storage.getAllSorted();
         Assert.assertEquals(storage.size(), resumes.size());
-        Assert.assertEquals(storage.getAllSorted(), resumes);
+        Assert.assertEquals(expectedList, resumes);
     }
 
     @Test

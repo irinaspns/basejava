@@ -14,7 +14,6 @@ import java.util.stream.Collectors;
 public abstract class AbstractArrayStorage extends AbstractStorage {
 
     protected static final int STORAGE_LIMIT = 10_000;
-//    protected static final Comparator<Resume> RESUME_COMPARATOR = Comparator.comparing(Resume::getUuid);
 
     protected Resume[] storage = new Resume[STORAGE_LIMIT];
     protected int size = 0;
@@ -64,13 +63,13 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
 
     @Override
     protected List<Resume> getAll() {
-        return Arrays.stream(Arrays.copyOfRange(storage, 0, size))
-                .collect(Collectors.toList());
-    }
+        Comparator<Resume> comparator
+                = Comparator.comparing(Resume::getFullName)
+                .thenComparing(Resume::getUuid);
 
-    @Override
-    protected Comparator getComparator() {
-        return UUID_COMPARATOR;
+        return Arrays.stream(Arrays.copyOfRange(storage, 0, size))
+                .sorted(comparator)
+                .collect(Collectors.toList());
     }
 
     @Override

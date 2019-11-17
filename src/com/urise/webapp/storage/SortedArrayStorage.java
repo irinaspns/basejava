@@ -3,6 +3,7 @@ package com.urise.webapp.storage;
 import com.urise.webapp.model.Resume;
 
 import java.util.Arrays;
+import java.util.Comparator;
 
 /**
  * Array based com.urise.webapp.storage for Resumes
@@ -17,14 +18,6 @@ public class SortedArrayStorage extends AbstractArrayStorage {
         }
     }
 */
-
-//    private static final Comparator<Resume> RESUME_COMPARATOR = new Comparator<Resume>() {
-//        @Override
-//        public int compare(Resume o1, Resume o2) {
-//            return o1.getUuid().compareTo(o2.getUuid());
-//        }
-//    };
-
     @Override
     protected void fillDeletedElement(int index) {
         int numMoved = size - index - 1;
@@ -42,6 +35,6 @@ public class SortedArrayStorage extends AbstractArrayStorage {
 
     @Override
     protected Integer getSearchKey(Resume resume) {
-        return Arrays.binarySearch(storage, 0, size, resume, UUID_COMPARATOR);
+        return Arrays.binarySearch(storage, 0, size, resume, Comparator.comparing(Resume::getUuid));
     }
 }

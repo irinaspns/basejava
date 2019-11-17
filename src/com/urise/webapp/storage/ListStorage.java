@@ -2,9 +2,7 @@ package com.urise.webapp.storage;
 
 import com.urise.webapp.model.Resume;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 /**
  * List based com.urise.webapp.storage for Resumes
@@ -55,12 +53,12 @@ public class ListStorage extends AbstractStorage {
 
     @Override
     protected List<Resume> getAll() {
-        return list;
-    }
+        Comparator<Resume> comparator
+                = Comparator.comparing(Resume::getFullName)
+                .thenComparing(Resume::getUuid);
 
-    @Override
-    protected Comparator getComparator() {
-        return UUID_COMPARATOR;
+        Collections.sort(list, comparator);
+        return list;
     }
 
     @Override

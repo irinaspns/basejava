@@ -21,14 +21,14 @@ public class MapUuidStorage extends AbstractStorage {
 
     @Override
     protected List<Resume> getAll() {
+        Comparator<Resume> comparator
+                = Comparator.comparing(Resume::getFullName)
+                .thenComparing(Resume::getUuid);
+
         return storage.entrySet().stream()
                 .map(e -> e.getValue())
+                .sorted(comparator)
                 .collect(Collectors.toList());
-    }
-
-    @Override
-    protected Comparator getComparator() {
-        return UUID_COMPARATOR;
     }
 
     public int size() {

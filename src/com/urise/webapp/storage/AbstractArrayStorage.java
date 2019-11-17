@@ -35,8 +35,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     @Override
     public List<Resume> getAllSorted() {
         Comparator<Resume> comparator
-                = Comparator.comparing(Resume::getFullName)
-                .thenComparing(Resume::getUuid);
+                = Comparator.comparing(Resume::getUuid);
 
         return Arrays.stream(Arrays.copyOfRange(storage, 0, size))
                 .sorted(comparator)
@@ -63,17 +62,6 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     @Override
     public Resume doGet(Object index) {
         return storage[(Integer) index];
-    }
-
-    @Override
-    protected List<Resume> getAll() {
-        Comparator<Resume> comparator
-                = Comparator.comparing(Resume::getFullName)
-                .thenComparing(Resume::getUuid);
-
-        return Arrays.stream(Arrays.copyOfRange(storage, 0, size))
-                .sorted(comparator)
-                .collect(Collectors.toList());
     }
 
     @Override

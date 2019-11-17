@@ -29,9 +29,9 @@ public abstract class AbstractStorageTest {
     private static final String NAAM_4 = "Neznaju T";
     private static final String NAAM_DUMMY = "Undefined W";
 
-    private static final Resume RESUME_1;
-    private static final Resume RESUME_2;
-    private static final Resume RESUME_3;
+    protected static final Resume RESUME_1;
+    protected static final Resume RESUME_2;
+    protected static final Resume RESUME_3;
     private static final Resume RESUME_4;
     protected static final Resume RESUME_DUMMY;
 

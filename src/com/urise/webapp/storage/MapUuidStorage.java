@@ -20,7 +20,7 @@ public class MapUuidStorage extends AbstractStorage {
     }
 
     @Override
-    protected List<Resume> getAll() {
+    public List<Resume> getAllSorted() {
         Comparator<Resume> comparator
                 = Comparator.comparing(Resume::getFullName)
                 .thenComparing(Resume::getUuid);

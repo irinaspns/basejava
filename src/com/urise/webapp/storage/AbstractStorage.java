@@ -16,7 +16,7 @@ public abstract class AbstractStorage implements Storage {
         }
     };
 
-    protected abstract Object getSearchKey(String uuid);
+    protected abstract Object getSearchKey(Resume resume);
 
     protected abstract void doUpdate(Resume resume, Object searchKey);
 
@@ -39,37 +39,37 @@ public abstract class AbstractStorage implements Storage {
     }
 
     public void update(Resume resume) {
-        Object searchKey = getExistedSearchKey(resume.getUuid());
+        Object searchKey = getExistedSearchKey(resume);
         doUpdate(resume, searchKey);
     }
 
     public void save(Resume resume) {
-        Object searchKey = getNotExistedSearchKey(resume.getUuid());
+        Object searchKey = getNotExistedSearchKey(resume);
         doSave(resume, searchKey);
     }
 
-    public void delete(String uuid) {
-        Object searchKey = getExistedSearchKey(uuid);
+    public void delete(Resume resume) {
+        Object searchKey = getExistedSearchKey(resume);
         doDelete(searchKey);
     }
 
-    public Resume get(String uuid) {
-        Object searchKey = getExistedSearchKey(uuid);
+    public Resume get(Resume resume) {
+        Object searchKey = getExistedSearchKey(resume);
         return doGet(searchKey);
     }
 
-    private Object getExistedSearchKey(String uuid) {
-        Object searchKey = getSearchKey(uuid);
+    private Object getExistedSearchKey(Resume resume) {
+        Object searchKey = getSearchKey(resume);
         if (!isExist(searchKey)) {
-            throw new NotExistStorageException(uuid);
+            throw new NotExistStorageException(resume);
         }
         return searchKey;
     }
 
-    private Object getNotExistedSearchKey(String uuid) {
-        Object searchKey = getSearchKey(uuid);
+    private Object getNotExistedSearchKey(Resume resume) {
+        Object searchKey = getSearchKey(resume);
         if (isExist(searchKey)) {
-            throw new ExistStorageException(uuid);
+            throw new ExistStorageException(resume);
         }
         return searchKey;
     }

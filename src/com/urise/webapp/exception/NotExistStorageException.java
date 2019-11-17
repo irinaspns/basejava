@@ -1,7 +1,9 @@
 package com.urise.webapp.exception;
 
+import com.urise.webapp.model.Resume;
+
 public class NotExistStorageException extends StorageException {
-    public NotExistStorageException(String uuid) {
-        super("Resume " + uuid + " not exist.", uuid);
+    public NotExistStorageException(Resume resume) {
+        super("Resume not exist.", resume);
     }
 }

@@ -90,6 +90,21 @@ public abstract class AbstractStorageTest {
     }
 
     @Test
+    public void getAllSortedSameName() {
+        Resume duplicateNameResume = new Resume( "labodaUuid", "Laboda S");
+        storage.save(duplicateNameResume);
+        List<Resume> expectedList = new ArrayList<>();
+        expectedList.add(RESUME_3);
+        expectedList.add(duplicateNameResume);
+        expectedList.add(RESUME_2);
+        expectedList.add(RESUME_1);
+
+        List<Resume> resumes = storage.getAllSorted();
+        Assert.assertEquals(storage.size(), resumes.size());
+        Assert.assertEquals(expectedList, resumes);
+    }
+
+    @Test
     public void save() {
         storage.save(RESUME_4);
         assertSize(4);

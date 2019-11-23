@@ -5,7 +5,6 @@ import com.urise.webapp.model.Resume;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Array based com.urise.webapp.storage for Resumes
@@ -32,10 +31,8 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    public List<Resume> getAllSorted() {
-        return Arrays.stream(Arrays.copyOfRange(storage, 0, size))
-                .sorted(NAME_UUID_COMPARATOR)
-                .collect(Collectors.toList());
+    public List<Resume> getAll() {
+        return Arrays.asList(Arrays.copyOfRange(storage, 0, size));
     }
 
     @Override

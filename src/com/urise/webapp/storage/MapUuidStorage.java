@@ -2,10 +2,10 @@ package com.urise.webapp.storage;
 
 import com.urise.webapp.model.Resume;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * Map based com.urise.webapp.storage for Resumes
@@ -18,11 +18,8 @@ public class MapUuidStorage extends AbstractStorage {
         storage.clear();
     }
 
-    @Override
-    public List<Resume> getAllSorted() {
-        return storage.values().stream()
-                .sorted(NAME_UUID_COMPARATOR)
-                .collect(Collectors.toList());
+    public List<Resume> getAll() {
+        return new ArrayList<>(storage.values());
     }
 
     public int size() {

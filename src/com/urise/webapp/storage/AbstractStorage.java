@@ -10,8 +10,8 @@ import java.util.stream.Collectors;
 
 public abstract class AbstractStorage implements Storage {
 
-    private Comparator<Resume> NAME_UUID_COMPARATOR
-            = Comparator.comparing(Resume::getFullName)
+    private Comparator<Resume> NAME_UUID_COMPARATOR  =
+            Comparator.comparing(Resume::getFullName)
             .thenComparing(Resume::getUuid);
 
     protected abstract Object getSearchKey(String uuid);

@@ -12,7 +12,7 @@ public abstract class AbstractStorage implements Storage {
             = Comparator.comparing(Resume::getFullName)
             .thenComparing(Resume::getUuid);
 
-    protected abstract Object getSearchKey(Resume resume);
+    protected abstract Object getSearchKey(String uuid);
 
     protected abstract void doUpdate(Resume resume, Object searchKey);
 
@@ -25,37 +25,37 @@ public abstract class AbstractStorage implements Storage {
     protected abstract void doDelete(Object searchKey);
 
     public void update(Resume resume) {
-        Object searchKey = getExistedSearchKey(resume);
+        Object searchKey = getExistedSearchKey(resume.getUuid());
         doUpdate(resume, searchKey);
     }
 
     public void save(Resume resume) {
-        Object searchKey = getNotExistedSearchKey(resume);
+        Object searchKey = getNotExistedSearchKey(resume.getUuid());
         doSave(resume, searchKey);
     }
 
-    public void delete(Resume resume) {
-        Object searchKey = getExistedSearchKey(resume);
+    public void delete(String uuid) {
+        Object searchKey = getExistedSearchKey(uuid);
         doDelete(searchKey);
     }
 
-    public Resume get(Resume resume) {
-        Object searchKey = getExistedSearchKey(resume);
+    public Resume get(String uuid) {
+        Object searchKey = getExistedSearchKey(uuid);
         return doGet(searchKey);
     }
 
-    private Object getExistedSearchKey(Resume resume) {
-        Object searchKey = getSearchKey(resume);
+    private Object getExistedSearchKey(String uuid) {
+        Object searchKey = getSearchKey(uuid);
         if (!isExist(searchKey)) {
-            throw new NotExistStorageException(resume);
+            throw new NotExistStorageException(uuid);
         }
         return searchKey;
     }
 
-    private Object getNotExistedSearchKey(Resume resume) {
-        Object searchKey = getSearchKey(resume);
+    private Object getNotExistedSearchKey(String uuid) {
+        Object searchKey = getSearchKey(uuid);
         if (isExist(searchKey)) {
-            throw new ExistStorageException(resume);
+            throw new ExistStorageException(uuid);
         }
         return searchKey;
     }

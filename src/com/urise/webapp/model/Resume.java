@@ -37,6 +37,9 @@ public class Resume {
         if (uuid == null || resume.uuid == null) {
             return fullName.equals(resume.fullName);
         }
+        if (fullName == null || resume.fullName == null) {
+            return uuid.equals(resume.uuid);
+        }
         return uuid.equals(resume.uuid) &&
                 fullName.equals(resume.fullName);
     }

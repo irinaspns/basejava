@@ -39,7 +39,7 @@ public class MapResumeStorage extends AbstractStorage {
     }
 
     protected Resume doGet(Object searchKey) {
-        return storage.get(((Resume) searchKey).getUuid());
+        return (Resume) searchKey;
     }
 
     @Override
@@ -49,7 +49,6 @@ public class MapResumeStorage extends AbstractStorage {
 
     @Override
     protected Resume getSearchKey(String uuid) {
-        Resume resume = new Resume(uuid, null);
-        return storage.get(uuid) == null ? null : resume;
+        return storage.get(uuid);
     }
 }

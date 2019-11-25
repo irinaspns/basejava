@@ -23,24 +23,20 @@ public abstract class AbstractStorageTest {
     private static final String UUID_4 = "uuid4";
     private static final String UUID_DUMMY = "uuidDummy";
 
-    private static final String NAAM_1 = "Zarubina O";
-    private static final String NAAM_2 = "Laboda S";
-    private static final String NAAM_3 = "Antonov J";
-    private static final String NAAM_4 = "Neznaju T";
-    private static final String NAAM_DUMMY = "Undefined W";
+    private static final String FULL_NAME_DUMMY = "Undefined W";
 
-    protected static final Resume RESUME_1;
-    protected static final Resume RESUME_2;
-    protected static final Resume RESUME_3;
+    private static final Resume RESUME_1;
+    private static final Resume RESUME_2;
+    private static final Resume RESUME_3;
     private static final Resume RESUME_4;
     protected static final Resume RESUME_DUMMY;
 
     static {
-        RESUME_1 = new Resume(UUID_1, NAAM_1);
-        RESUME_2 = new Resume(UUID_2, NAAM_2);
-        RESUME_3 = new Resume(UUID_3, NAAM_3);
-        RESUME_4 = new Resume(UUID_4, NAAM_4);
-        RESUME_DUMMY = new Resume(UUID_DUMMY, NAAM_DUMMY);
+        RESUME_1 = new Resume(UUID_1, "Zarubina O");
+        RESUME_2 = new Resume(UUID_2, "Laboda S");
+        RESUME_3 = new Resume(UUID_3, "Antonov J");
+        RESUME_4 = new Resume(UUID_4, "Neznaju T");
+        RESUME_DUMMY = new Resume(UUID_DUMMY, FULL_NAME_DUMMY);
     }
 
     AbstractStorageTest(Storage storage) {
@@ -81,21 +77,6 @@ public abstract class AbstractStorageTest {
     public void getAllSorted() {
         List<Resume> expectedList = new ArrayList<>();
         expectedList.add(RESUME_3);
-        expectedList.add(RESUME_2);
-        expectedList.add(RESUME_1);
-
-        List<Resume> resumes = storage.getAllSorted();
-        Assert.assertEquals(storage.size(), resumes.size());
-        Assert.assertEquals(expectedList, resumes);
-    }
-
-    @Test
-    public void getAllSortedSameName() {
-        Resume duplicateNameResume = new Resume( "labodaUuid", "Laboda S");
-        storage.save(duplicateNameResume);
-        List<Resume> expectedList = new ArrayList<>();
-        expectedList.add(RESUME_3);
-        expectedList.add(duplicateNameResume);
         expectedList.add(RESUME_2);
         expectedList.add(RESUME_1);
 

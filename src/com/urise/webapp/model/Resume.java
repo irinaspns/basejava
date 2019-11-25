@@ -34,14 +34,16 @@ public class Resume {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Resume resume = (Resume) o;
-        if (uuid == null || resume.uuid == null) {
-            return fullName.equals(resume.fullName);
+
+        if (!Objects.equals(this.uuid, resume.uuid)) {
+            return false;
         }
-        if (fullName == null || resume.fullName == null) {
-            return uuid.equals(resume.uuid);
+
+        if (!Objects.equals(this.fullName, resume.fullName)) {
+            return false;
         }
-        return uuid.equals(resume.uuid) &&
-                fullName.equals(resume.fullName);
+
+        return true;
     }
 
     @Override

@@ -26,10 +26,10 @@ public abstract class AbstractStorage implements Storage {
 
     protected abstract void doDelete(Object searchKey);
 
-    protected abstract List<Resume> getAll();
+    protected abstract List<Resume> doGetAll();
 
     public List<Resume> getAllSorted() {
-        return getAll()
+        return doGetAll()
                 .stream()
                 .sorted(NAME_UUID_COMPARATOR)
                 .collect(Collectors.toList());

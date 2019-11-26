@@ -12,43 +12,50 @@ import java.util.Map;
  */
 public class MapUuidStorage extends AbstractStorage {
 
-    private Map<String, Resume> storage = new HashMap<>();
-
-    public void clear() {
-        storage.clear();
-    }
-
-    public List<Resume> getAll() {
-        return new ArrayList<>(storage.values());
-    }
-
-    public int size() {
-        return storage.size();
-    }
-
-    protected void doUpdate(Resume resume, Object searchKey) {
-        storage.put(searchKey.toString(), resume);
-    }
-
-    protected void doSave(Resume resume, Object searchKey) {
-        storage.put(resume.getUuid(), resume);
-    }
-
-    protected void doDelete(Object searchKey) {
-        storage.remove(searchKey);
-    }
-
-    protected Resume doGet(Object searchKey) {
-        return storage.get(searchKey);
-    }
-
-    @Override
-    protected boolean isExist(Object searchKey) {
-        return searchKey != null;
-    }
+    private Map<String, Resume> map = new HashMap<>();
 
     @Override
     protected String getSearchKey(String uuid) {
-        return storage.get(uuid) == null ? null : uuid;
+        return uuid;
+    }
+
+    @Override
+    protected void doUpdate(Resume resume, Object uuid) {
+        map.put((String) uuid, resume);
+    }
+
+    @Override
+    protected boolean isExist(Object uuid) {
+        return map.containsKey(uuid);
+    }
+
+    @Override
+    protected void doSave(Resume resume, Object uuid) {
+        map.put((String) uuid, resume);
+    }
+
+    @Override
+    protected Resume doGet(Object uuid) {
+        return map.get(uuid);
+    }
+
+    @Override
+    protected void doDelete(Object uuid) {
+        map.remove(uuid);
+    }
+
+    @Override
+    public void clear() {
+        map.clear();
+    }
+
+    @Override
+    public List<Resume> doGetAll() {
+        return new ArrayList<>(map.values());
+    }
+
+    @Override
+    public int size() {
+        return map.size();
     }
 }

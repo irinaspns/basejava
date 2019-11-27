@@ -10,7 +10,7 @@ import java.util.Map;
 /**
  * Map based com.urise.webapp.storage for Resumes
  */
-public class MapResumeStorage extends AbstractStorage {
+public class MapResumeStorage extends AbstractStorage<Resume> {
 
     private Map<String, Resume> storage = new HashMap<>();
 
@@ -31,24 +31,24 @@ public class MapResumeStorage extends AbstractStorage {
         return storage.size();
     }
 
-    protected void doUpdate(Resume resume, Object searchKey) {
-        storage.put(((Resume) searchKey).getUuid(), resume);
+    protected void doUpdate(Resume resume, Resume searchKey) {
+        storage.put(searchKey.getUuid(), resume);
     }
 
-    protected void doSave(Resume resume, Object searchKey) {
+    protected void doSave(Resume resume, Resume searchKey) {
         storage.put(resume.getUuid(), resume);
     }
 
-    protected void doDelete(Object searchKey) {
-        storage.remove(((Resume) searchKey).getUuid());
+    protected void doDelete(Resume searchKey) {
+        storage.remove(searchKey.getUuid());
     }
 
-    protected Resume doGet(Object searchKey) {
-        return (Resume) searchKey;
+    protected Resume doGet(Resume searchKey) {
+        return searchKey;
     }
 
     @Override
-    protected boolean isExist(Object searchKey) {
+    protected boolean isExist(Resume searchKey) {
         return searchKey != null;
     }
 }

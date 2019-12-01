@@ -1,7 +1,6 @@
 package com.urise.webapp.model;
 
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Initial resume class
@@ -11,6 +10,13 @@ public class Resume {
     // Unique identifier
     private final String uuid;
     private final String fullName;
+    private Map<ContactType, String> contacten = new HashMap<>();
+    private TextSection position = new TextSection(SectionType.OBJECTIVE);
+    private TextSection personal  = new TextSection(SectionType.PERSONAL);
+    private TextSection achievements = new TextSection(SectionType.ACHIEVEMENT);
+    private TextSection qualification = new TextSection(SectionType.QUALIFICATIONS);
+    private ChapterSection experience = new ChapterSection(SectionType.EXPERIENCE);
+    private ChapterSection education = new ChapterSection(SectionType.EDUCATION);
 
     public Resume(String fullName) {
         this(UUID.randomUUID().toString() , fullName);
@@ -48,13 +54,5 @@ public class Resume {
         int result = uuid.hashCode();
         result = 31 * result + fullName.hashCode();
         return result;
-    }
-
-    @Override
-    public String toString() {
-        return "Resume{" +
-                "uuid='" + uuid + '\'' +
-                ", fullName='" + fullName + '\'' +
-                '}';
     }
 }

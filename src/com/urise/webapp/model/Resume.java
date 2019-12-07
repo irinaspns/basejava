@@ -11,7 +11,7 @@ public class Resume {
     private final String uuid;
     private final String fullName;
     private Map<ContactType, String> contacten = new HashMap<>();
-    private Map<SectionType, TextSection> data = new HashMap<>();
+    private Map<SectionType, Section> data = new HashMap<>();
 
     public Resume(String fullName) {
         this(UUID.randomUUID().toString() , fullName);
@@ -40,11 +40,11 @@ public class Resume {
         this.contacten.put(type, value);
     }
 
-    public Map<SectionType, TextSection> getData() {
+    public Map<SectionType, Section> getData() {
         return data;
     }
 
-    public void addData(SectionType type, TextSection data) {
+    public void addData(SectionType type, Section data) {
         this.data.put(type, data);
     }
 

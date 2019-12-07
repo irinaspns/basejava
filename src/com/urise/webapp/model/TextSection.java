@@ -1,12 +1,18 @@
 package com.urise.webapp.model;
 
-import java.util.List;
+public class TextSection extends Section {
 
-public class TextSection {
-    private SectionType type;
-    private List<String> text;
+    private String text;
 
     public TextSection(SectionType type) {
-        this.type = type;
+        super(type);
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
     }
 }

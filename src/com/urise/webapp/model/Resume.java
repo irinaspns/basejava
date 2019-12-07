@@ -11,12 +11,7 @@ public class Resume {
     private final String uuid;
     private final String fullName;
     private Map<ContactType, String> contacten = new HashMap<>();
-    private TextSection position = new TextSection(SectionType.OBJECTIVE);
-    private TextSection personal  = new TextSection(SectionType.PERSONAL);
-    private TextSection achievements = new TextSection(SectionType.ACHIEVEMENT);
-    private TextSection qualification = new TextSection(SectionType.QUALIFICATIONS);
-    private ChapterSection experience = new ChapterSection(SectionType.EXPERIENCE);
-    private ChapterSection education = new ChapterSection(SectionType.EDUCATION);
+    private Map<SectionType, TextSection> data = new HashMap<>();
 
     public Resume(String fullName) {
         this(UUID.randomUUID().toString() , fullName);
@@ -35,6 +30,22 @@ public class Resume {
 
     public String getFullName() {
         return fullName;
+    }
+
+    public Map<ContactType, String> getContacten() {
+        return contacten;
+    }
+
+    public void addContact(ContactType type, String  value) {
+        this.contacten.put(type, value);
+    }
+
+    public Map<SectionType, TextSection> getData() {
+        return data;
+    }
+
+    public void addData(SectionType type, TextSection data) {
+        this.data.put(type, data);
     }
 
     @Override

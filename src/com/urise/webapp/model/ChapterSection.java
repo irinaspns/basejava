@@ -2,11 +2,9 @@ package com.urise.webapp.model;
 
 import java.util.List;
 
-public class ChapterSection extends TextSection {
+public class ChapterSection extends Section {
 
-    private String titel;
-    private String link;
-    private List<SubChapter> subChapters;
+    private List<Chapter> chapters;
 
     public ChapterSection(SectionType type) {
         super(type);

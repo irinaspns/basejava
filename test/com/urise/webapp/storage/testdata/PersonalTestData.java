@@ -7,8 +7,7 @@ import com.urise.webapp.model.TextSection;
 public class PersonalTestData {
 
     void addData(Resume resume) {
-        TextSection data = new TextSection();
-        data.setText("Аналитический склад ума, сильная логика, креативность, инициативность. Пурист кода и архитектуры.");
-        resume.addData(SectionType.PERSONAL, data);
+        TextSection data = new TextSection("Аналитический склад ума, сильная логика, креативность, инициативность. Пурист кода и архитектуры.");
+        resume.addSection(SectionType.PERSONAL, data);
     }
 }

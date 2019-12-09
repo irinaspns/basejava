@@ -7,8 +7,7 @@ import com.urise.webapp.model.TextSection;
 public class ObjectiveTestData {
 
     void addData(Resume resume) {
-        TextSection data = new TextSection();
-        data.setText("Ведущий стажировок и корпоративного обучения по Java Web и Enterprise технологиям");
-        resume.addData(SectionType.OBJECTIVE, data);
+        TextSection data = new TextSection("Ведущий стажировок и корпоративного обучения по Java Web и Enterprise технологиям");
+        resume.addSection(SectionType.OBJECTIVE, data);
     }
 }

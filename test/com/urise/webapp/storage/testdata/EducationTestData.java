@@ -3,6 +3,8 @@ package com.urise.webapp.storage.testdata;
 import com.urise.webapp.model.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 public class EducationTestData {
 
@@ -10,76 +12,77 @@ public class EducationTestData {
 
     void addData(Resume resume) {
 
-        ChapterSection data = new ChapterSection();
+        List<Organization> organizations = new ArrayList<>();
 
-        Chapter chapter = new Chapter();
-        chapter.setTitel("Coursera");
-        chapter.setUrl(TEST_URL);
-        TimeBlock block = new TimeBlock();
-        block.setFrom(LocalDate.of(2013, 3, 1));
-        block.setTill(LocalDate.of(2013, 5, 1));
-        block.setSubTitel("\"Functional Programming Principles in Scala\" by Martin Odersky");
-        chapter.addSubChapters(block);
-        data.addChapter(chapter);
+        TimeBlock block = new TimeBlock(
+                LocalDate.of(2013, 3, 1),
+                LocalDate.of(2013, 5, 1),
+                "\"Functional Programming Principles in Scala\" by Martin Odersky");
+        List<TimeBlock> list = new ArrayList<>();
+        list.add(block);
+        Organization organization = new Organization("Coursera", list);
+        organization.setUrl(TEST_URL);
+        organizations.add(organization);
 
-        chapter = new Chapter();
-        chapter.setTitel("Luxoft");
-        chapter.setUrl(TEST_URL);
-        block = new TimeBlock();
-        block.setFrom(LocalDate.of(2011, 3, 1));
-        block.setTill(LocalDate.of(2011, 4, 1));
-        block.setSubTitel("Курс \"Объектно-ориентированный анализ ИС. Концептуальное моделирование на UML.\"");
-        chapter.addSubChapters(block);
-        data.addChapter(chapter);
+        block = new TimeBlock(
+                LocalDate.of(2011, 3, 1),
+                LocalDate.of(2011, 4, 1),
+                "Курс \"Объектно-ориентированный анализ ИС. Концептуальное моделирование на UML.\"");
+        list = new ArrayList<>();
+        list.add(block);
+        organization = new Organization("Luxoft", list);
+        organization.setUrl(TEST_URL);
+        organizations.add(organization);
 
-        chapter = new Chapter();
-        chapter.setTitel("Siemens AG");
-        chapter.setUrl(TEST_URL);
-        block = new TimeBlock();
-        block.setFrom(LocalDate.of(2005, 1, 1));
-        block.setTill(LocalDate.of(2005, 4, 1));
-        block.setSubTitel("3 месяца обучения мобильным IN сетям (Берлин)");
-        chapter.addSubChapters(block);
-        data.addChapter(chapter);
+        block = new TimeBlock(
+                LocalDate.of(2005, 1, 1),
+                LocalDate.of(2005, 4, 1),
+                "3 месяца обучения мобильным IN сетям (Берлин)");
+        list = new ArrayList<>();
+        list.add(block);
+        organization = new Organization("Siemens AG", list);
+        organization.setUrl(TEST_URL);
+        organizations.add(organization);
 
-        chapter = new Chapter();
-        chapter.setTitel("Alcatel");
-        chapter.setUrl(TEST_URL);
-        block = new TimeBlock();
-        block.setFrom(LocalDate.of(1997, 9, 1));
-        block.setTill(LocalDate.of(1998, 3, 1));
-        block.setSubTitel("6 месяцев обучения цифровым телефонным сетям (Москва)");
-        chapter.addSubChapters(block);
-        data.addChapter(chapter);
+        block = new TimeBlock(
+                LocalDate.of(1997, 9, 1),
+                LocalDate.of(1998, 3, 1),
+                "6 месяцев обучения цифровым телефонным сетям (Москва)");
+        list = new ArrayList<>();
+        list.add(block);
+        organization = new Organization("Alcatel", list);
+        organization.setUrl(TEST_URL);
+        organizations.add(organization);
 
-        chapter = new Chapter();
-        chapter.setTitel("Санкт-Петербургский национальный исследовательский университет информационных технологий, механики и оптики");
-        chapter.setUrl(TEST_URL);
+        block = new TimeBlock(
+                LocalDate.of(1993, 9, 1),
+                LocalDate.of(1996, 7, 1),
+                "Аспирантура (программист С, С++)");
+        list = new ArrayList<>();
+        list.add(block);
 
-        block = new TimeBlock();
-        block.setFrom(LocalDate.of(1993, 9, 1));
-        block.setTill(LocalDate.of(1996, 7, 1));
-        block.setSubTitel("Аспирантура (программист С, С++)");
-        chapter.addSubChapters(block);
+        block = new TimeBlock(
+                LocalDate.of(1987, 9, 1),
+                LocalDate.of(1993, 7, 1),
+                "Инженер (программист Fortran, C)");
+        list.add(block);
 
-        block = new TimeBlock();
-        block.setFrom(LocalDate.of(1987, 9, 1));
-        block.setTill(LocalDate.of(1993, 7, 1));
-        block.setSubTitel("Инженер (программист Fortran, C)");
-        chapter.addSubChapters(block);
+        organization = new Organization("Санкт-Петербургский национальный исследовательский университет информационных технологий, механики и оптики", list);
+        organization.setUrl(TEST_URL);
+        organizations.add(organization);
 
-        data.addChapter(chapter);
+        block = new TimeBlock(
+                LocalDate.of(1984, 9, 1),
+                LocalDate.of(1987, 6, 1),
+                "Закончил с отличием");
+        list = new ArrayList<>();
+        list.add(block);
 
-        chapter = new Chapter();
-        chapter.setTitel("Заочная физико-техническая школа при МФТИ");
-        chapter.setUrl(TEST_URL);
-        block = new TimeBlock();
-        block.setFrom(LocalDate.of(1984, 9, 1));
-        block.setTill(LocalDate.of(1987, 6, 1));
-        block.setSubTitel("Закончил с отличием");
-        chapter.addSubChapters(block);
-        data.addChapter(chapter);
+        organization = new Organization("Заочная физико-техническая школа при МФТИ", list);
+        organization.setUrl(TEST_URL);
+        organizations.add(organization);
 
-        resume.addData(SectionType.EDUCATION, data);
+        ChapterSection data = new ChapterSection(organizations);
+        resume.addSection(SectionType.EDUCATION, data);
     }
 }

@@ -7,7 +7,7 @@ public class TextSection extends Section {
     private final String text;
 
     public TextSection(String text) {
-        assert text == null : " Text can not be null";
+        Objects.requireNonNull(text, "text must not be null");
         this.text = text;
     }
 

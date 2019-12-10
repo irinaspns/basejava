@@ -9,7 +9,7 @@ public class Contact {
     private final String value;
 
     public Contact(String value) {
-        assert value == null : " Contact value can not be null";
+        Objects.requireNonNull(value, "value must not be null");
         this.value = value;
     }
 

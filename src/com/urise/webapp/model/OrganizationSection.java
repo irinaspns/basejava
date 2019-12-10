@@ -3,12 +3,12 @@ package com.urise.webapp.model;
 import java.util.List;
 import java.util.Objects;
 
-public class ChapterSection extends Section {
+public class OrganizationSection extends Section {
 
     private final List<Organization> organizations;
 
-    public ChapterSection(List<Organization> organizations) {
-        assert organizations == null : " Chapters can not be null";
+    public OrganizationSection(List<Organization> organizations) {
+        Objects.requireNonNull(organizations, "organizations must not be null");
         this.organizations = organizations;
     }
 
@@ -16,15 +16,11 @@ public class ChapterSection extends Section {
         return organizations;
     }
 
-    public void addChapter(Organization organization) {
-        this.organizations.add(organization);
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ChapterSection that = (ChapterSection) o;
+        OrganizationSection that = (OrganizationSection) o;
         return organizations.equals(that.organizations);
     }
 
@@ -35,7 +31,7 @@ public class ChapterSection extends Section {
 
     @Override
     public String toString() {
-        return "ChapterSection{" +
+        return "OrganizationSection{" +
                 "organizations=" + organizations +
                 '}';
     }

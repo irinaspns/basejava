@@ -6,13 +6,15 @@ import java.util.Objects;
 public class Organization {
 
     private final String title;
-    private String url;
-    private final List<TimeBlock> timeBlocks;
+    private final String url;
+    private final List<Position> positions;
 
-    public Organization(String title, List<TimeBlock> timeBlocks) {
-        assert title == null || timeBlocks == null: " Title en timeBlocks can not be null";
+    public Organization(String title, String url, List<Position> positions) {
+        Objects.requireNonNull(title, "title must not be null");
+        Objects.requireNonNull(positions, "positions must not be null");
         this.title = title;
-        this.timeBlocks = timeBlocks;
+        this.url = url;
+        this.positions = positions;
     }
 
     public String getTitle() {
@@ -23,16 +25,8 @@ public class Organization {
         return url;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    public List<TimeBlock> getTimeBlocks() {
-        return timeBlocks;
-    }
-
-    public void addTimeBlock(TimeBlock timeBlock) {
-        this.timeBlocks.add(timeBlock);
+    public List<Position> getPositions() {
+        return positions;
     }
 
     @Override
@@ -41,13 +35,13 @@ public class Organization {
         if (o == null || getClass() != o.getClass()) return false;
         Organization that = (Organization) o;
         return title.equals(that.title) &&
-                Objects.equals(url, that.url) &&
-                timeBlocks.equals(that.timeBlocks);
+                url.equals(that.url) &&
+                positions.equals(that.positions);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(title, url, timeBlocks);
+        return Objects.hash(title, url, positions);
     }
 
     @Override
@@ -55,7 +49,7 @@ public class Organization {
         return "Organization{" +
                 "title='" + title + '\'' +
                 ", url='" + url + '\'' +
-                ", timeBlocks=" + timeBlocks +
+                ", positions=" + positions +
                 '}';
     }
 }

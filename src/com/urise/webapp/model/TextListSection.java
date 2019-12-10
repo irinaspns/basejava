@@ -8,16 +8,12 @@ public class TextListSection extends Section {
     private final List<String> list;
 
     public TextListSection(List<String> list) {
-        assert list == null : " List can not be null";
+        Objects.requireNonNull(list, "list must not be null");
         this.list = list;
     }
 
     public List<String> getList() {
         return list;
-    }
-
-    public void addItem(String item) {
-        this.list.add(item);
     }
 
     @Override

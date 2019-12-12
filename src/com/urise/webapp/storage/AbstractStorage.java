@@ -29,11 +29,11 @@ public abstract class AbstractStorage<SK> implements Storage {
 
     protected abstract void doDelete(SK searchKey);
 
-    protected abstract List<Resume> doGetAll();
+    protected abstract List<Resume> doCopyAll();
 
     public List<Resume> getAllSorted() {
         LOG.info("getAllSorted");
-        return doGetAll()
+        return doCopyAll()
                 .stream()
                 .sorted(NAME_UUID_COMPARATOR)
                 .collect(Collectors.toList());

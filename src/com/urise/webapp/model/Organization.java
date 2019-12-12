@@ -35,7 +35,6 @@ public class Organization {
         if (o == null || getClass() != o.getClass()) return false;
         Organization that = (Organization) o;
         return title.equals(that.title) &&
-                url.equals(that.url) &&
                 positions.equals(that.positions);
     }
 

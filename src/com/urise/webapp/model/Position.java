@@ -43,8 +43,7 @@ public class Position {
         Position position = (Position) o;
         return from.equals(position.from) &&
                 till.equals(position.till) &&
-                title.equals(position.title) &&
-                description.equals(position.description);
+                title.equals(position.title);
     }
 
     @Override

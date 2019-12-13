@@ -10,7 +10,7 @@ public class EducationTestData {
 
     public static final String TEST_URL = "https://javawebinar.github.io/";
 
-    void addData(Resume resume) {
+    OrganizationSection getEducations() {
 
         List<Organization> organizations = new ArrayList<>();
 
@@ -83,7 +83,6 @@ public class EducationTestData {
         organization = new Organization("Заочная физико-техническая школа при МФТИ", TEST_URL, list);
         organizations.add(organization);
 
-        OrganizationSection data = new OrganizationSection(organizations);
-        resume.addSection(SectionType.EDUCATION, data);
+        return new OrganizationSection(organizations);
     }
 }

@@ -10,9 +10,8 @@ public class ExperienceTestData {
 
     public static final String TEST_URL = "https://javawebinar.github.io/";
 
-    void addData(Resume resume) {
+    OrganizationSection getExperiences() {
         List<Organization> organizations = new ArrayList<>();
-
         Position position = new Position(
                 LocalDate.of(2013, 10, 1),
                 LocalDate.now(),
@@ -93,7 +92,6 @@ public class ExperienceTestData {
         organization = new Organization("Alcatel", TEST_URL, list);
         organizations.add(organization);
 
-        OrganizationSection data = new OrganizationSection(organizations);
-        resume.addSection(SectionType.EXPERIENCE, data);
+        return new OrganizationSection(organizations);
     }
 }

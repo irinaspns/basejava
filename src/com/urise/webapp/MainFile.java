@@ -29,5 +29,17 @@ public class MainFile {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
+        printFileNames("C:\\swo\\basejava");
+    }
+
+    public static void printFileNames(String dir) {
+        File[] files = new File(dir).listFiles();
+        for (File file : files) {
+            System.out.println(file.getAbsolutePath());
+            if (file.isDirectory()) {
+                MainFile.printFileNames(file.getAbsolutePath());
+            }
+        }
     }
 }

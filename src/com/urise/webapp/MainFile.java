@@ -35,10 +35,14 @@ public class MainFile {
 
     public static void printFileNames(String dir) {
         File[] files = new File(dir).listFiles();
+        if (files == null) {
+            return;
+        }
         for (File file : files) {
-            System.out.println(file.getAbsolutePath());
             if (file.isDirectory()) {
                 MainFile.printFileNames(file.getAbsolutePath());
+            } else {
+                System.out.println(file.getAbsolutePath());
             }
         }
     }

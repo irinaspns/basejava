@@ -25,24 +25,15 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
 
     @Override
     public void clear() {
-        File[] files = directory.listFiles();
-        if (files == null) {
-            return;
-        }
+        File[] files = getFiles();
         for (File file : files) {
-            if (!file.isDirectory()) {
-                file.delete();
-            }
+            doDelete(file);
         }
     }
 
     @Override
     public int size() {
-        File[] files = directory.listFiles();
-        if (files == null) {
-            return 0;
-        }
-        return files.length;
+        return getFiles().length;
     }
 
     @Override
@@ -67,8 +58,10 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     @Override
     protected void doSave(Resume resume, File file) {
         try {
-            file.createNewFile();
-            doWrite(resume, file);
+            if (!file.createNewFile()) {
+                throw new StorageException("File can not be created", file.getName());
+            }
+            doUpdate(resume, file);
         } catch (IOException e) {
             throw new StorageException("IO error", file.getName(), e);
         }
@@ -89,26 +82,27 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
 
     @Override
     protected void doDelete(File file) {
-        file.delete();
+        if (!file.delete()) {
+            throw new StorageException("File can not be deleted", file.getName());
+        }
     }
 
     @Override
     protected List<Resume> doCopyAll() {
-        File[] files = directory.listFiles();
-        if (files == null) {
-            return null;
-        }
+        File[] files = getFiles();
 
         List<Resume> list = new ArrayList<>();
         for (File file : files) {
-            if (!file.isDirectory()) {
-                try {
-                    list.add(doRead(file));
-                } catch (IOException e) {
-                    throw new StorageException("IO error", file.getName(), e);
-                }
-            }
+            list.add(doGet(file));
         }
         return list;
+    }
+
+    private File[] getFiles() {
+        File[] files = directory.listFiles();
+        if (files == null) {
+            throw new StorageException("Directory is empty", directory.getAbsolutePath());
+        }
+        return files;
     }
 }

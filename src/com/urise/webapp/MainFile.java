@@ -42,7 +42,7 @@ public class MainFile {
             if (file.isDirectory()) {
                 MainFile.printFileNames(file.getAbsolutePath());
             } else {
-                System.out.println(file.getAbsolutePath());
+                System.out.println(file.getName());
             }
         }
     }

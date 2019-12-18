@@ -1,9 +1,12 @@
 package com.urise.webapp.model;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
 
-public class Position {
+public class Position implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private final LocalDate from;
     private final LocalDate till;

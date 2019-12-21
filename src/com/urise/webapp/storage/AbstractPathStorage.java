@@ -25,22 +25,18 @@ public abstract class AbstractPathStorage extends AbstractStorage<Path> {
         }
     }
 
+    protected abstract Resume doRead(InputStream is) throws IOException;
+
+    protected abstract void doWrite(Resume resume, OutputStream os) throws IOException;
+
     @Override
     public void clear() {
-        try {
-            Files.list(directory).forEach(this::doDelete);
-        } catch (IOException e) {
-            throw new StorageException("Path delete error", null, e);
-        }
+        getPaths().forEach(this::doDelete);
     }
 
     @Override
     public int size() {
-        try {
-            return (int) Files.list(directory).count();
-        } catch (IOException e) {
-            throw new StorageException("Path size error", null, e);
-        }
+        return (int) getPaths().count();
     }
 
     @Override
@@ -72,10 +68,6 @@ public abstract class AbstractPathStorage extends AbstractStorage<Path> {
         doUpdate(r, path);
     }
 
-    protected abstract Resume doRead(InputStream is) throws IOException;
-
-    protected abstract void doWrite(Resume resume, OutputStream os) throws IOException;
-
     @Override
     protected Resume doGet(Path path) {
         try {
@@ -96,16 +88,19 @@ public abstract class AbstractPathStorage extends AbstractStorage<Path> {
 
     @Override
     protected List<Resume> doCopyAll() {
+        Stream<Path> paths = getPaths();
+        List<Resume> list = new ArrayList<>();
+        paths.forEach(p -> list.add(doGet(p)));
+        return list;
+    }
+
+    private Stream<Path> getPaths() {
         Stream<Path> paths;
         try {
             paths = Files.list(directory);
         } catch (IOException e) {
-            throw new StorageException("Directory read error", null);
+            throw new StorageException("Path read error", null);
         }
-
-        List<Resume> list = new ArrayList<>();
-        paths.forEach(p -> list.add(doGet(p)));
-
-        return list;
+        return paths;
     }
 }

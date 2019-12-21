@@ -39,10 +39,11 @@ public class MainFile {
             return;
         }
         for (File file : files) {
-            if (file.isDirectory()) {
-                MainFile.printFileNames(file.getAbsolutePath());
-            } else {
-                System.out.println(file.getName());
+            if (file.isFile()) {
+                System.out.println("\tFile: " + file.getName());
+            } else if (file.isDirectory()) {
+                System.out.println("Directory: " + file.getName());
+                printFileNames(file.getName());
             }
         }
     }

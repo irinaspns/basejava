@@ -12,20 +12,19 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public abstract class AbstractPathStorage extends AbstractStorage<Path> {
-    private Path directory;
+public class PathStorage extends AbstractStorage<Path> {
 
-    protected AbstractPathStorage(String dir) {
+    private Path directory;
+    private ReadWriteStrategy readWriteStrategy;
+
+    protected PathStorage(String dir, ReadWriteStrategy readWriteStrategy) {
         directory = Paths.get(dir);
         Objects.requireNonNull(directory, "directory must not be null");
+        Objects.requireNonNull(readWriteStrategy, "readWriteStrategy must not be null");
         if (!Files.isDirectory(directory) || !Files.isWritable(directory)) {
             throw new IllegalArgumentException(dir + " is not directory or is not writable");
         }
     }
-
-    protected abstract Resume doRead(InputStream is) throws IOException;
-
-    protected abstract void doWrite(Resume resume, OutputStream os) throws IOException;
 
     @Override
     public void clear() {
@@ -45,7 +44,7 @@ public abstract class AbstractPathStorage extends AbstractStorage<Path> {
     @Override
     protected void doUpdate(Resume r, Path path) {
         try {
-            doWrite(r, new BufferedOutputStream(Files.newOutputStream(path)));
+            readWriteStrategy.doWrite(r, new BufferedOutputStream(Files.newOutputStream(path)));
         } catch (IOException e) {
             throw new StorageException("Path write error", r.getUuid(), e);
         }
@@ -69,7 +68,7 @@ public abstract class AbstractPathStorage extends AbstractStorage<Path> {
     @Override
     protected Resume doGet(Path path) {
         try {
-            return doRead(new BufferedInputStream(Files.newInputStream(path)));
+            return readWriteStrategy.doRead(new BufferedInputStream(Files.newInputStream(path)));
         } catch (IOException e) {
             throw new StorageException("Path read error", null, e);
         }

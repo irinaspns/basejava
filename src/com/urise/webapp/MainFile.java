@@ -29,29 +29,22 @@ public class MainFile {
 //        }
 
         File dir = new File("C:\\swo\\basejava");
-        printDirectoryDeeply(dir, 0);
+        printDirectoryDeeply(dir, "");
     }
 
-    public static void printDirectoryDeeply(File dir, int t) {
+    public static void printDirectoryDeeply(File dir, String t) {
         File[] files = dir.listFiles();
 
         if (files != null) {
             for (File file : files) {
                 if (file.isFile()) {
-                    System.out.println(getTabs(t + 1) + "File: " + file.getName());
+                    System.out.println(t + "\t" + "File: " + file.getName());
                 } else if (file.isDirectory()) {
-                    System.out.println(getTabs(t + 1) + "Directory: " + file.getName());
-                    printDirectoryDeeply(file, t + 1);
+                    System.out.println(t + "\t" + "Directory: " + file.getName());
+                    printDirectoryDeeply(file, t + "\t");
                 }
             }
         }
     }
 
-    private static String getTabs(int count) {
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < count; i++) {
-            sb.append("\t");
-        }
-        return sb.toString();
-    }
 }

@@ -34,16 +34,14 @@ public class MainFile {
 
     public static void printDirectoryDeeply(File dir, String t) {
         File[] files = dir.listFiles();
-        StringBuilder tabs = new StringBuilder(t);
-        tabs.append("\t");
 
         if (files != null) {
             for (File file : files) {
                 if (file.isFile()) {
-                    System.out.println(tabs.toString() + "File: " + file.getName());
+                    System.out.println(t + "\t" + "File: " + file.getName());
                 } else if (file.isDirectory()) {
-                    System.out.println(tabs.toString() + "Directory: " + file.getName());
-                    printDirectoryDeeply(file, tabs.toString());
+                    System.out.println(t + "\t" + "Directory: " + file.getName());
+                    printDirectoryDeeply(file, t + "\t");
                 }
             }
         }

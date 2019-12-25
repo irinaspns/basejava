@@ -11,11 +11,11 @@ import java.util.Objects;
 public class FileStorage extends AbstractStorage<File> {
 
     private File directory;
-    private ReadWriteStrategy readWriteStrategy;
+    private StorageStrategy storageStrategy;
 
-    protected FileStorage(File directory, ReadWriteStrategy readWriteStrategy) {
+    protected FileStorage(File directory, StorageStrategy storageStrategy) {
         Objects.requireNonNull(directory, "directory must not be null");
-        Objects.requireNonNull(readWriteStrategy, "readWriteStrategy must not be null");
+        Objects.requireNonNull(storageStrategy, "readWriteStrategy must not be null");
         if (!directory.isDirectory()) {
             throw new IllegalArgumentException(directory.getAbsolutePath() + " is not directory");
         }
@@ -23,7 +23,7 @@ public class FileStorage extends AbstractStorage<File> {
             throw new IllegalArgumentException(directory.getAbsolutePath() + " is not readable/writable");
         }
         this.directory = directory;
-        this.readWriteStrategy = readWriteStrategy;
+        this.storageStrategy = storageStrategy;
     }
 
     @Override
@@ -47,7 +47,7 @@ public class FileStorage extends AbstractStorage<File> {
     @Override
     protected void doUpdate(Resume resume, File file) {
         try {
-            readWriteStrategy.doWrite(resume, new BufferedOutputStream(new FileOutputStream(file)));
+            storageStrategy.doWrite(resume, new BufferedOutputStream(new FileOutputStream(file)));
         } catch (IOException e) {
             throw new StorageException("IO error", file.getName(), e);
         }
@@ -73,7 +73,7 @@ public class FileStorage extends AbstractStorage<File> {
     @Override
     protected Resume doGet(File file) {
         try {
-            return readWriteStrategy.doRead(new BufferedInputStream(new FileInputStream(file)));
+            return storageStrategy.doRead(new BufferedInputStream(new FileInputStream(file)));
         } catch (IOException e) {
             throw new StorageException("IO error", file.getName(), e);
         }

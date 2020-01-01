@@ -7,7 +7,10 @@ public class TextListSection extends Section {
 
     private static final long serialVersionUID = 1L;
 
-    private final List<String> list;
+    private List<String> list;
+
+    public TextListSection() {
+    }
 
     public TextListSection(List<String> list) {
         Objects.requireNonNull(list, "list must not be null");

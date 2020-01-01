@@ -1,17 +1,28 @@
 package com.urise.webapp.model;
 
+import com.urise.webapp.util.LocalDateAdapter;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
 
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Position implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private final LocalDate from;
-    private final LocalDate till;
-    private final String title;
-    private final String description;
+    @XmlJavaTypeAdapter(LocalDateAdapter.class)
+    private LocalDate from;
+    @XmlJavaTypeAdapter(LocalDateAdapter.class)
+    private LocalDate till;
+    private String title;
+    private String description;
+
+    public Position() {
+    }
 
     public Position(LocalDate from, LocalDate till, String title, String description) {
         Objects.requireNonNull(from, "from must not be null");

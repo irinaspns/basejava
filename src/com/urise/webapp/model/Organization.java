@@ -28,6 +28,10 @@ public class Organization implements Serializable {
         return positions;
     }
 
+    public Link getLink() {
+        return link;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

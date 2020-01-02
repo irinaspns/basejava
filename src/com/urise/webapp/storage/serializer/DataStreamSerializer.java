@@ -23,9 +23,11 @@ public class DataStreamSerializer implements StreamSerializer {
             // TODO implements sections
             Map<SectionType, Section> sections = r.getSections();
 
+            // TextSections
             writeTextSection(SectionType.OBJECTIVE, sections, dos);
             writeTextSection(SectionType.PERSONAL, sections, dos);
 
+            // TextListSections
             writeTextListSection(SectionType.ACHIEVEMENT, sections, dos);
             writeTextListSection(SectionType.QUALIFICATIONS, sections, dos);
         }
@@ -37,7 +39,7 @@ public class DataStreamSerializer implements StreamSerializer {
         dos.writeInt(section == null ? 0 : 1);
         if (section != null) {
             dos.writeUTF(sectionType.name());
-            dos.writeUTF(((TextSection) sections.get(sectionType)).getText());
+            dos.writeUTF(((TextSection) section).getText());
         }
     }
 
@@ -46,10 +48,9 @@ public class DataStreamSerializer implements StreamSerializer {
                                       DataOutputStream dos) throws IOException {
         Section section = sections.get(sectionType);
         dos.writeInt(section == null ? 0 : 1);
-        dos.writeUTF(sectionType.name());
         if (section != null) {
-            TextListSection textListSection = (TextListSection) sections.get(sectionType);
-            List<String> list = textListSection.getList();
+            dos.writeUTF(sectionType.name());
+            List<String> list = ((TextListSection) section).getList();
             dos.writeInt(list.size());
             for (String s : list) {
                 dos.writeUTF(s);
@@ -68,6 +69,7 @@ public class DataStreamSerializer implements StreamSerializer {
                 resume.addContact(ContactType.valueOf(dis.readUTF()), dis.readUTF());
             }
             // TODO implements sections
+            // TextSections
             if (dis.readInt() > 0) { // OBJECTIVE
                 resume.addSection(SectionType.valueOf(dis.readUTF()), new TextSection(dis.readUTF()));
             }
@@ -75,6 +77,7 @@ public class DataStreamSerializer implements StreamSerializer {
                 resume.addSection(SectionType.valueOf(dis.readUTF()), new TextSection(dis.readUTF()));
             }
 
+            // TextListSections
             if (dis.readInt() > 0) { // ACHIEVEMENT
                 readTextListSection(dis, resume);
             }

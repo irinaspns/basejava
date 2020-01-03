@@ -48,20 +48,6 @@ public class DataStreamSerializer implements StreamSerializer {
                         break;
                 }
             }
-
-
-//            // TextSections
-//            writeTextSection(SectionType.OBJECTIVE, sections, dos);
-//            writeTextSection(SectionType.PERSONAL, sections, dos);
-//
-//            // TextListSections
-//            writeTextListSection(SectionType.ACHIEVEMENT, sections, dos);
-//            writeTextListSection(SectionType.QUALIFICATIONS, sections, dos);
-//
-//            // OrganizationSection
-//            writeOrganizationSection(SectionType.EDUCATION, sections, dos);
-//            writeOrganizationSection(SectionType.EXPERIENCE, sections, dos);
-
         }
     }
 
@@ -147,10 +133,12 @@ public class DataStreamSerializer implements StreamSerializer {
     }
 
     private void readTextSection(SectionType sectionType, DataInputStream dis, Resume resume) throws IOException {
+
         resume.addSection(sectionType, new TextSection(dis.readUTF()));
     }
 
     private void readTextListSection(SectionType sectionType, DataInputStream dis, Resume resume) throws IOException {
+
         int size = dis.readInt();
         List<String> list = new ArrayList<>(size);
         for (int i = 0; i < size; i++) {
@@ -160,6 +148,7 @@ public class DataStreamSerializer implements StreamSerializer {
     }
 
     private void readOrganizationSection(SectionType sectionType, DataInputStream dis, Resume resume) throws IOException {
+
         int organizationsSize = dis.readInt();
         if (organizationsSize > 0) {
             List<Organization> organizations = new ArrayList<>(organizationsSize);

@@ -155,11 +155,17 @@ public class DataStreamSerializer implements StreamSerializer {
             for (int i = 0; i < organizationsSize; i++) {
                 String name = dis.readUTF();
                 String url = dis.readUTF();
+                if ("".equalsIgnoreCase(url)) {
+                    url = null;
+                }
                 int positionsSize = dis.readInt();
                 if (positionsSize > 0) {
                     List<Position> positions = new ArrayList<>();
                     for (int j = 0; j < positionsSize; j++) {
                         String description = dis.readUTF();
+                        if ("".equalsIgnoreCase(description)) {
+                            description = null;
+                        }
                         String title = dis.readUTF();
                         LocalDate from = LocalDate.parse(dis.readUTF(), DATE_FORMATTER);
                         LocalDate till = LocalDate.parse(dis.readUTF(), DATE_FORMATTER);

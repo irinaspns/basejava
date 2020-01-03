@@ -3,6 +3,7 @@ package com.urise.webapp.storage;
 import com.urise.webapp.exception.ExistStorageException;
 import com.urise.webapp.exception.NotExistStorageException;
 import com.urise.webapp.model.Resume;
+import com.urise.webapp.model.Section;
 import com.urise.webapp.model.SectionType;
 import com.urise.webapp.storage.testdata.ResumeTestData;
 import org.junit.Before;
@@ -11,6 +12,7 @@ import org.junit.Test;
 import java.io.File;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -125,7 +127,22 @@ public abstract class AbstractStorageTest {
     }
 
     private void assertGet(Resume r) {
-        assertEquals(r, storage.get(r.getUuid()));
+        Resume result =  storage.get(r.getUuid());
+        assertEquals(r.getUuid(), result.getUuid());
+        assertEquals(r.getFullName(), result.getFullName());
+        assertEquals(r.getContacts(), result.getContacts());
+        Map<SectionType, Section> in = r.getSections();
+        Map<SectionType, Section> out = r.getSections();
+
+        for (Map.Entry<SectionType, Section> entry: in.entrySet()) {
+            SectionType type = entry.getKey();
+            Section section = entry.getValue();
+
+            if (out.get(type) != section) {
+                System.out.println("fout");
+            }
+        }
+        assertEquals(r.getSections(), result.getSections());
     }
 
     private void assertSize(int size) {

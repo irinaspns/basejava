@@ -19,7 +19,7 @@ public class DataStreamSerializer implements StreamSerializer {
             dos.writeUTF(r.getUuid());
             dos.writeUTF(r.getFullName());
 
-            // Contacten
+            // Contacts
             Map<ContactType, String> contacts = r.getContacts();
             dos.writeInt(contacts.size());
             for (Map.Entry<ContactType, String> entry : contacts.entrySet()) {
@@ -36,7 +36,7 @@ public class DataStreamSerializer implements StreamSerializer {
                 switch (sectionType) {
                     case OBJECTIVE:
                     case PERSONAL:
-                        writeTextSection(sectionType, sections, dos);
+                        dos.writeUTF(((TextSection) sections.get(sectionType)).getText());
                         break;
                     case ACHIEVEMENT:
                     case QUALIFICATIONS:
@@ -49,13 +49,6 @@ public class DataStreamSerializer implements StreamSerializer {
                 }
             }
         }
-    }
-
-    private void writeTextSection(SectionType sectionType,
-                                  Map<SectionType, Section> sections,
-                                  DataOutputStream dos) throws IOException {
-
-        dos.writeUTF(((TextSection) sections.get(sectionType)).getText());
     }
 
     private void writeTextListSection(SectionType sectionType,
@@ -102,7 +95,7 @@ public class DataStreamSerializer implements StreamSerializer {
             String fullName = dis.readUTF();
             Resume resume = new Resume(uuid, fullName);
 
-            // Contacten
+            // Contacts
             int size = dis.readInt();
             for (int i = 0; i < size; i++) {
                 resume.addContact(ContactType.valueOf(dis.readUTF()), dis.readUTF());
@@ -115,7 +108,7 @@ public class DataStreamSerializer implements StreamSerializer {
                 switch (sectionType) {
                     case OBJECTIVE:
                     case PERSONAL:
-                        readTextSection(sectionType, dis, resume);
+                        resume.addSection(sectionType, new TextSection(dis.readUTF()));
                         break;
                     case ACHIEVEMENT:
                     case QUALIFICATIONS:
@@ -130,11 +123,6 @@ public class DataStreamSerializer implements StreamSerializer {
 
             return resume;
         }
-    }
-
-    private void readTextSection(SectionType sectionType, DataInputStream dis, Resume resume) throws IOException {
-
-        resume.addSection(sectionType, new TextSection(dis.readUTF()));
     }
 
     private void readTextListSection(SectionType sectionType, DataInputStream dis, Resume resume) throws IOException {

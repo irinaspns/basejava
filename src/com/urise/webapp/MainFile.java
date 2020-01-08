@@ -28,7 +28,7 @@ public class MainFile {
 //            throw new RuntimeException(e);
 //        }
 
-        File dir = new File("C:\\swo\\basejava");
+        File dir = new File("C:\\Workspaces\\IDEA-IZO_BASE\\basejava");
         printDirectoryDeeply(dir, "");
     }
 

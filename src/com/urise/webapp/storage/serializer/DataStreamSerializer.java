@@ -32,24 +32,24 @@ public class DataStreamSerializer implements StreamSerializer {
             dos.writeUTF(r.getFullName());
 
             // Contacts
-            ElementWriter<Map.Entry<ContactType, String>> contactWriter = entry -> {
-                dos.writeUTF(entry.getKey().name());
-                dos.writeUTF(entry.getValue());
-            };
-            writeCollection(dos, r.getContacts().entrySet(), contactWriter);
+            writeCollection(dos, r.getContacts().entrySet(), contactEntry -> {
+                dos.writeUTF(contactEntry.getKey().name());
+                dos.writeUTF(contactEntry.getValue());
+            });
 
             // Sections
-            ElementWriter<Map.Entry<SectionType, Section>> sectionWriter = entry -> {
-                SectionType sectionType = entry.getKey();
+
+            writeCollection(dos, r.getSections().entrySet(), sectionEntry -> {
+                SectionType sectionType = sectionEntry.getKey();
                 dos.writeUTF(sectionType.name());
                 switch (sectionType) {
                     case OBJECTIVE:
                     case PERSONAL:
-                        dos.writeUTF(((TextSection) entry.getValue()).getText());
+                        dos.writeUTF(((TextSection) sectionEntry.getValue()).getText());
                         break;
                     case ACHIEVEMENT:
                     case QUALIFICATIONS:
-                        writeCollection(dos, ((TextListSection) entry.getValue()).getList(), dos::writeUTF);
+                        writeCollection(dos, ((TextListSection) sectionEntry.getValue()).getList(), dos::writeUTF);
                         break;
                     case EDUCATION:
                     case EXPERIENCE:
@@ -65,12 +65,10 @@ public class DataStreamSerializer implements StreamSerializer {
                                 dos.writeUTF(position.getTill().format(DATE_FORMATTER));
                             });
                         };
-                        writeCollection(dos, ((OrganizationSection) entry.getValue()).getOrganizations(), organizationElementWriter);
+                        writeCollection(dos, ((OrganizationSection) sectionEntry.getValue()).getOrganizations(), organizationElementWriter);
                         break;
                 }
-            };
-
-            writeCollection(dos, r.getSections().entrySet(), sectionWriter);
+            });
         }
     }
 

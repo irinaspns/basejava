@@ -69,15 +69,17 @@ public class DataStreamSerializer implements StreamSerializer {
         }
     }
 
-    private interface ElementReader<T> {
+    private interface ListReader<T> {
         T read() throws IOException;
     }
 
-    private <T> void readCollection(DataInputStream dis, Collection<T> collection, ElementReader<T> reader) throws IOException {
+    private <T> List<T> readCollection(DataInputStream dis, ListReader<T> listReader) throws IOException {
         int size = dis.readInt();
+        List list = new ArrayList(size);
         for (int i = 0; i < size; i++) {
-            collection.add(reader.read());
+            list.add(listReader.read());
         }
+        return list;
     }
 
     private interface EntryReader<K, V> {
@@ -104,10 +106,6 @@ public class DataStreamSerializer implements StreamSerializer {
             readMap(dis, resume.getContacts(), () -> new AbstractMap.SimpleEntry<>(ContactType.valueOf(dis.readUTF()), dis.readUTF()));
 
             // Sections
-//            readMap(dis, resume.getSections(), () -> {
-//                new AbstractMap.SimpleEntry<>(dis.readUTF()),
-//            });
-
             int size = dis.readInt();
             for (int i = 0; i < size; i++) {
                 SectionType sectionType = SectionType.valueOf(dis.readUTF());
@@ -118,11 +116,19 @@ public class DataStreamSerializer implements StreamSerializer {
                         break;
                     case ACHIEVEMENT:
                     case QUALIFICATIONS:
-                        resume.addSection(sectionType, readTextListSection(dis));
+                        resume.addSection(sectionType, new TextListSection(readCollection(dis, dis::readUTF)));
                         break;
                     case EDUCATION:
                     case EXPERIENCE:
-                        resume.addSection(sectionType, readOrganizationSection(dis));
+                        resume.addSection(sectionType,
+                                new OrganizationSection(readCollection(dis, () ->
+                                        new Organization(dis.readUTF(), defaultIfEmpty(dis.readUTF(), null), readCollection(dis, () -> {
+                                            String description = defaultIfEmpty(dis.readUTF(), null);
+                                            String title = dis.readUTF();
+                                            LocalDate from = LocalDate.parse(dis.readUTF(), DATE_FORMATTER);
+                                            LocalDate till = LocalDate.parse(dis.readUTF(), DATE_FORMATTER);
+                                            return new Position(from, till, title, description);
+                                        })))));
                         break;
                 }
             }
@@ -131,45 +137,9 @@ public class DataStreamSerializer implements StreamSerializer {
         }
     }
 
-    private TextListSection readTextListSection(DataInputStream dis) throws
-            IOException {
-
-        int size = dis.readInt();
-        List<String> list = new ArrayList<>(size);
-        for (int i = 0; i < size; i++) {
-            list.add(dis.readUTF());
-        }
-        return new TextListSection(list);
-    }
-
-    private OrganizationSection readOrganizationSection(DataInputStream dis) throws
-            IOException {
-
-        int organizationsSize = dis.readInt();
-        List<Organization> organizations = new ArrayList<>(organizationsSize);
-        for (int i = 0; i < organizationsSize; i++) {
-            String name = dis.readUTF();
-            String url = dis.readUTF();
-            if ("".equalsIgnoreCase(url)) {
-                url = null;
-            }
-            int positionsSize = dis.readInt();
-            if (positionsSize > 0) {
-                List<Position> positions = new ArrayList<>();
-                for (int j = 0; j < positionsSize; j++) {
-                    String description = dis.readUTF();
-                    if ("".equalsIgnoreCase(description)) {
-                        description = null;
-                    }
-                    String title = dis.readUTF();
-                    LocalDate from = LocalDate.parse(dis.readUTF(), DATE_FORMATTER);
-                    LocalDate till = LocalDate.parse(dis.readUTF(), DATE_FORMATTER);
-                    positions.add(new Position(from, till, title, description));
-                }
-                Organization organization = new Organization(name, url, positions);
-                organizations.add(organization);
-            }
-        }
-        return new OrganizationSection(organizations);
+    private static String defaultIfEmpty(final String s, final String ifEmpty) {
+        if ("".equals(s))
+            return ifEmpty;
+        return s;
     }
 }

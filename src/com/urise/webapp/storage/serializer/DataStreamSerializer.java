@@ -35,7 +35,6 @@ public class DataStreamSerializer implements StreamSerializer {
             });
 
             // Sections
-
             writeCollection(dos, r.getSections().entrySet(), sectionEntry -> {
                 SectionType sectionType = sectionEntry.getKey();
                 dos.writeUTF(sectionType.name());
@@ -73,9 +72,9 @@ public class DataStreamSerializer implements StreamSerializer {
         T read() throws IOException;
     }
 
-    private <T> List<T> readCollection(DataInputStream dis, ListReader<T> listReader) throws IOException {
+    private <T> List<T> readList(DataInputStream dis, ListReader<T> listReader) throws IOException {
         int size = dis.readInt();
-        List list = new ArrayList(size);
+        List<T> list = new ArrayList<>(size);
         for (int i = 0; i < size; i++) {
             list.add(listReader.read());
         }
@@ -84,6 +83,10 @@ public class DataStreamSerializer implements StreamSerializer {
 
     private interface EntryReader<K, V> {
         Map.Entry<K, V> read() throws IOException;
+    }
+
+    private <K, V> Map.Entry<K, V> readEntry(DataInputStream dis, EntryReader<K, V> reader) throws IOException {
+        return reader.read();
     }
 
     private <K, V> void readMap(DataInputStream dis, Map<K, V> map, EntryReader<K, V> reader) throws IOException {
@@ -106,40 +109,43 @@ public class DataStreamSerializer implements StreamSerializer {
             readMap(dis, resume.getContacts(), () -> new AbstractMap.SimpleEntry<>(ContactType.valueOf(dis.readUTF()), dis.readUTF()));
 
             // Sections
-            int size = dis.readInt();
-            for (int i = 0; i < size; i++) {
+            readMap(dis, resume.getSections(), () -> {
                 SectionType sectionType = SectionType.valueOf(dis.readUTF());
+                Map.Entry<SectionType, Section> entry = null;
                 switch (sectionType) {
                     case OBJECTIVE:
                     case PERSONAL:
-                        resume.addSection(sectionType, new TextSection(dis.readUTF()));
+                        entry = readEntry(dis, () ->
+                                new AbstractMap.SimpleEntry<>(sectionType,
+                                        new TextSection(dis.readUTF())));
                         break;
                     case ACHIEVEMENT:
                     case QUALIFICATIONS:
-                        resume.addSection(sectionType, new TextListSection(readCollection(dis, dis::readUTF)));
+                        entry = readEntry(dis, () ->
+                                new AbstractMap.SimpleEntry<>(sectionType,
+                                        new TextListSection(readList(dis, dis::readUTF))));
                         break;
                     case EDUCATION:
                     case EXPERIENCE:
-                        resume.addSection(sectionType,
-                                new OrganizationSection(readCollection(dis, () ->
-                                        new Organization(dis.readUTF(), defaultIfEmpty(dis.readUTF(), null), readCollection(dis, () -> {
-                                            String description = defaultIfEmpty(dis.readUTF(), null);
-                                            String title = dis.readUTF();
-                                            LocalDate from = LocalDate.parse(dis.readUTF(), DATE_FORMATTER);
-                                            LocalDate till = LocalDate.parse(dis.readUTF(), DATE_FORMATTER);
-                                            return new Position(from, till, title, description);
-                                        })))));
+                        entry = readEntry(dis, () ->
+                                new AbstractMap.SimpleEntry<>(sectionType,
+                                        new OrganizationSection(readList(dis, () ->
+                                                new Organization(dis.readUTF(), nullIfEmpty(dis.readUTF()), readList(dis, () -> {
+                                                    String description = nullIfEmpty(dis.readUTF());
+                                                    String title = dis.readUTF();
+                                                    LocalDate from = LocalDate.parse(dis.readUTF(), DATE_FORMATTER);
+                                                    LocalDate till = LocalDate.parse(dis.readUTF(), DATE_FORMATTER);
+                                                    return new Position(from, till, title, description);
+                                                }))))));
                         break;
                 }
-            }
-
+                return entry;
+            });
             return resume;
         }
     }
 
-    private static String defaultIfEmpty(final String s, final String ifEmpty) {
-        if ("".equals(s))
-            return ifEmpty;
-        return s;
+    private static String nullIfEmpty(final String s) {
+        return "".equals(s) ? null : s;
     }
 }

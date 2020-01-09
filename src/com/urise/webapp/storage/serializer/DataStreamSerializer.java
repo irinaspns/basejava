@@ -5,10 +5,7 @@ import com.urise.webapp.model.*;
 import java.io.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class DataStreamSerializer implements StreamSerializer {
 
@@ -72,6 +69,29 @@ public class DataStreamSerializer implements StreamSerializer {
         }
     }
 
+    private interface ElementReader<T> {
+        T read() throws IOException;
+    }
+
+    private <T> void readCollection(DataInputStream dis, Collection<T> collection, ElementReader<T> reader) throws IOException {
+        int size = dis.readInt();
+        for (int i = 0; i < size; i++) {
+            collection.add(reader.read());
+        }
+    }
+
+    private interface EntryReader<K, V> {
+        Map.Entry<K, V> read() throws IOException;
+    }
+
+    private <K, V> void readMap(DataInputStream dis, Map<K, V> map, EntryReader<K, V> reader) throws IOException {
+        int size = dis.readInt();
+        for (int i = 0; i < size; i++) {
+            Map.Entry<K, V> entry = reader.read();
+            map.put(entry.getKey(), entry.getValue());
+        }
+    }
+
     @Override
     public Resume doRead(InputStream is) throws IOException {
 
@@ -81,13 +101,14 @@ public class DataStreamSerializer implements StreamSerializer {
             Resume resume = new Resume(uuid, fullName);
 
             // Contacts
-            int size = dis.readInt();
-            for (int i = 0; i < size; i++) {
-                resume.addContact(ContactType.valueOf(dis.readUTF()), dis.readUTF());
-            }
+            readMap(dis, resume.getContacts(), () -> new AbstractMap.SimpleEntry<>(ContactType.valueOf(dis.readUTF()), dis.readUTF()));
 
             // Sections
-            size = dis.readInt();
+//            readMap(dis, resume.getSections(), () -> {
+//                new AbstractMap.SimpleEntry<>(dis.readUTF()),
+//            });
+
+            int size = dis.readInt();
             for (int i = 0; i < size; i++) {
                 SectionType sectionType = SectionType.valueOf(dis.readUTF());
                 switch (sectionType) {
@@ -97,11 +118,11 @@ public class DataStreamSerializer implements StreamSerializer {
                         break;
                     case ACHIEVEMENT:
                     case QUALIFICATIONS:
-                        readTextListSection(sectionType, dis, resume);
+                        resume.addSection(sectionType, readTextListSection(dis));
                         break;
                     case EDUCATION:
                     case EXPERIENCE:
-                        readOrganizationSection(sectionType, dis, resume);
+                        resume.addSection(sectionType, readOrganizationSection(dis));
                         break;
                 }
             }
@@ -110,7 +131,7 @@ public class DataStreamSerializer implements StreamSerializer {
         }
     }
 
-    private void readTextListSection(SectionType sectionType, DataInputStream dis, Resume resume) throws
+    private TextListSection readTextListSection(DataInputStream dis) throws
             IOException {
 
         int size = dis.readInt();
@@ -118,39 +139,37 @@ public class DataStreamSerializer implements StreamSerializer {
         for (int i = 0; i < size; i++) {
             list.add(dis.readUTF());
         }
-        resume.addSection(sectionType, new TextListSection(list));
+        return new TextListSection(list);
     }
 
-    private void readOrganizationSection(SectionType sectionType, DataInputStream dis, Resume resume) throws
+    private OrganizationSection readOrganizationSection(DataInputStream dis) throws
             IOException {
 
         int organizationsSize = dis.readInt();
-        if (organizationsSize > 0) {
-            List<Organization> organizations = new ArrayList<>(organizationsSize);
-            for (int i = 0; i < organizationsSize; i++) {
-                String name = dis.readUTF();
-                String url = dis.readUTF();
-                if ("".equalsIgnoreCase(url)) {
-                    url = null;
-                }
-                int positionsSize = dis.readInt();
-                if (positionsSize > 0) {
-                    List<Position> positions = new ArrayList<>();
-                    for (int j = 0; j < positionsSize; j++) {
-                        String description = dis.readUTF();
-                        if ("".equalsIgnoreCase(description)) {
-                            description = null;
-                        }
-                        String title = dis.readUTF();
-                        LocalDate from = LocalDate.parse(dis.readUTF(), DATE_FORMATTER);
-                        LocalDate till = LocalDate.parse(dis.readUTF(), DATE_FORMATTER);
-                        positions.add(new Position(from, till, title, description));
-                    }
-                    Organization organization = new Organization(name, url, positions);
-                    organizations.add(organization);
-                }
+        List<Organization> organizations = new ArrayList<>(organizationsSize);
+        for (int i = 0; i < organizationsSize; i++) {
+            String name = dis.readUTF();
+            String url = dis.readUTF();
+            if ("".equalsIgnoreCase(url)) {
+                url = null;
             }
-            resume.addSection(sectionType, new OrganizationSection(organizations));
+            int positionsSize = dis.readInt();
+            if (positionsSize > 0) {
+                List<Position> positions = new ArrayList<>();
+                for (int j = 0; j < positionsSize; j++) {
+                    String description = dis.readUTF();
+                    if ("".equalsIgnoreCase(description)) {
+                        description = null;
+                    }
+                    String title = dis.readUTF();
+                    LocalDate from = LocalDate.parse(dis.readUTF(), DATE_FORMATTER);
+                    LocalDate till = LocalDate.parse(dis.readUTF(), DATE_FORMATTER);
+                    positions.add(new Position(from, till, title, description));
+                }
+                Organization organization = new Organization(name, url, positions);
+                organizations.add(organization);
+            }
         }
+        return new OrganizationSection(organizations);
     }
 }

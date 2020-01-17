@@ -26,13 +26,9 @@ public class MainStreams {
     }
 
     private static List<Integer> oddOrEven(List<Integer> integers) {
-        List <Integer> result = integers
+        return integers.stream().filter(integers
                 .stream()
-                .reduce(0, Integer::sum) % 2 == 0 ?
-                    integers.stream().filter(p -> p % 2 != 0).collect(Collectors.toList())
-                    :
-                    integers.stream().filter(p1 -> p1 % 2 == 0).collect(Collectors.toList());
-        return result;
+                .reduce(0, Integer::sum) % 2 == 0 ? p -> p % 2 != 0 : p1 -> p1 % 2 == 0).collect(Collectors.toList());
     }
 
 }

@@ -19,7 +19,7 @@ public class MainStreams {
         return IntStream.of(values)
                .distinct()
                .sorted()
-               .reduce(0, (subSum, number) -> subSum *10 + number);
+               .reduce(0, (subSum, number) -> subSum * 10 + number);
     }
 
     private static List<Integer> oddOrEven(List<Integer> integers) {

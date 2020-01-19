@@ -2,8 +2,11 @@ package com.urise.webapp;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Map;
 import java.util.stream.IntStream;
+
+import static java.util.stream.Collectors.partitioningBy;
+import static java.util.stream.Collectors.toList;
 
 public class MainStreams {
 
@@ -13,6 +16,7 @@ public class MainStreams {
 
         List <Integer> integers = Arrays.asList(5, 7, 8, 3, 2, 5);
         System.out.println(oddOrEven(integers));
+        System.out.println(oddOrEven2(integers));
     }
 
     private static int minValue(int[] values) {
@@ -26,7 +30,16 @@ public class MainStreams {
         return integers.stream().filter(integers
                 .stream()
                 .reduce(0, Integer::sum) % 2 == 0 ? p -> p % 2 != 0 : p1 -> p1 % 2 == 0)
-                .collect(Collectors.toList());
+                .collect(toList());
     }
 
+    private static List<Integer> oddOrEven2(List<Integer> integers) {
+        Map<Boolean, List<Integer>> map = integers
+                .stream()
+                .collect(partitioningBy(p -> p % 2 == 0, toList()));
+
+        return (integers
+                .stream()
+                .reduce(0, Integer::sum) % 2 == 0) ? map.get(false) : map.get(true);
+    }
 }

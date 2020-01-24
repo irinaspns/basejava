@@ -4,6 +4,7 @@ import java.io.File;
 
 public class MainFile {
     public static void main(String[] args) {
+        System.out.println("test");
 //        String filePath = ".\\.gitignore";
 
 //        File file = new File(filePath);

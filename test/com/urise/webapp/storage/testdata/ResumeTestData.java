@@ -14,7 +14,7 @@ public class ResumeTestData {
     }
 
     public static void addContacts(Resume resume) {
-        resume.addContact(ContactType.PHONE_NUMBER, "+7(921) 855-0482");
+        resume.addContact(ContactType.PHONE, "+7(921) 855-0482");
         resume.addContact(ContactType.SKYPE, "grigory.kislin");
         resume.addContact(ContactType.MAIL, "gkislin@yandex.ru");
         resume.addContact(ContactType.LINKED_IN, "Профиль LinkedIn");

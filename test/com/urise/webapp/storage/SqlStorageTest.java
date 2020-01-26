@@ -2,7 +2,7 @@ package com.urise.webapp.storage;
 
 import com.urise.webapp.Config;
 
-public class SqlStorageTest extends AbstractStorageTestOld {
+public class SqlStorageTest extends AbstractStorageTest {
     private static Config CONFIG = Config.get();
 
     public SqlStorageTest() {

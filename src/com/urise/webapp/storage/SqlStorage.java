@@ -1,11 +1,13 @@
 package com.urise.webapp.storage;
 
+import com.urise.webapp.exception.ExistStorageException;
 import com.urise.webapp.exception.NotExistStorageException;
 import com.urise.webapp.exception.StorageException;
 import com.urise.webapp.model.Resume;
 import com.urise.webapp.sql.ConnectionFactory;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class SqlStorage implements Storage {
@@ -48,20 +50,20 @@ public class SqlStorage implements Storage {
             ps.setString(2, resume.getFullName());
             ps.execute();
         } catch (SQLException e) {
-            throw new StorageException(e);
+            throw new ExistStorageException(e);
         }
     }
 
     @Override
     public Resume get(String uuid) {
         try (Connection conn = connectionFactory.getConnection();
-             PreparedStatement ps = conn.prepareStatement("select from resume r where r.uuid = ?")) {
+             PreparedStatement ps = conn.prepareStatement("select * from resume r where r.uuid = ?")) {
             ps.setString(1, uuid);
             final ResultSet rs = ps.executeQuery();
             if (!rs.next()) {
                 throw new NotExistStorageException(uuid);
             }
-            return new Resume(uuid, rs.getString("full_name"));
+            return new Resume(uuid, rs.getString("full_name").trim());
         } catch (SQLException e) {
             throw new StorageException(e);
         }
@@ -72,7 +74,10 @@ public class SqlStorage implements Storage {
         try (Connection conn = connectionFactory.getConnection();
              PreparedStatement ps = conn.prepareStatement("delete from resume r where r.uuid = ?")) {
             ps.setString(1, uuid);
-            ps.executeUpdate();
+            final int rows = ps.executeUpdate();
+            if (rows == 0) {
+                throw new NotExistStorageException(uuid);
+            }
         } catch (SQLException e) {
             throw new StorageException(e);
         }
@@ -80,7 +85,17 @@ public class SqlStorage implements Storage {
 
     @Override
     public List<Resume> getAllSorted() {
-        return null;
+        List<Resume> resumes = new ArrayList<>();
+        try (Connection conn = connectionFactory.getConnection();
+             PreparedStatement ps = conn.prepareStatement("select * from resume r order by r.full_name")) {
+            final ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                resumes.add(new Resume(rs.getString("uuid").trim(), rs.getString("full_name").trim()));
+            }
+        } catch (SQLException e) {
+            throw new StorageException(e);
+        }
+        return resumes;
     }
 
     @Override
